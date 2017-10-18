@@ -8,7 +8,7 @@ cache:
 install:
   - npm install
 before_script:
+  - npm run bootstrap
   - npm run build
-  - lerna bootstrap
 script:
   - npm run test

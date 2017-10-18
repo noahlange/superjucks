@@ -2,6 +2,7 @@
   "name": "superjucks-lerna",
   "version": "0.2.0",
   "scripts": {
+    "bootstrap": "lerna bootstrap",
     "build": "lerna run build",
     "test": "lerna run test"
   },
@@ -9,10 +10,7 @@
   "devDependencies": {
     "@types/node": "^8.0.34",
     "ava": "^0.22.0",
-    "change-case": "^3.0.1",
-    "lerna": "^2.0.0",
     "lodash": "^4.17.4",
-    "moment": "^2.19.1",
     "nyc": "^11.2.1",
     "tslint": "^5.7.0",
     "typescript": "^2.5.3"
