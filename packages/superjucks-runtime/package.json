@@ -9,6 +9,7 @@
     "moment": "^2.19.1"
   },
   "scripts": {
+    "test": ":",
     "build": "tsc"
   }
 }
