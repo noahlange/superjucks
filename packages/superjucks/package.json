@@ -1,7 +1,6 @@
 {
   "name": "superjucks",
   "description": "Nunjucks-inspired templating language from the future!",
-  "license": "BSD-2",
   "version": "0.2.0",
   "nyc": {
     "reporter": [
