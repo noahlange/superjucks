@@ -12,7 +12,7 @@ export default class MacroNode extends Node {
 
     const name = parser.parsePrimary(true);
     const args = parser.parseSignature();
-    const node = new MacroNode(macroTok.line, macroTok.col, { name, args });
+    const node = new MacroNode(macroTok.line, macroTok.col, { name, args, body: null });
 
     parser.advanceAfterBlockEnd(macroTok.value);
     node.body = parser.parseUntilBlocks('endmacro');

@@ -265,21 +265,6 @@ test('should parse is operator', t => {
   ]);
 });
 
-test('should parse default function parameters', t => {
-  t.deepEqual(p('{% macro foo(bar, baz = 2) %}{% endmacro %}'), [
-    Nodes.Root,
-    [
-      Nodes.Macro,
-      [Nodes.Symbol, 'foo'],
-      [
-        Nodes.List,
-        [Nodes.Symbol, 'bar'],
-        [Nodes.Assign, [Nodes.Symbol, 'baz'], [Nodes.Literal, 2]]
-      ]
-    ]
-  ]);
-});
-
 test('should throw on unterminated comments', t => {
   t.throws(() => p('{# foo'));
 });

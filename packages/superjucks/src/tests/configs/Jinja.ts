@@ -120,11 +120,29 @@ test('should cast == and != to strict operators', t => {
 test('should allow kwargs to be called inside macro', t => {
   t.deepEqual(
     p(
-      '{% macro render_div() %}{{ kwargs["baz"] }}{% endmacro %}{{ render_div(baz=2) }}'
+      '{% macro render_div(foo = "bar") %}{{ foo }}{{ kwargs["baz"] }}{% endmacro %}{{ render_div(baz=2) }}'
     ),
     [
       Nodes.Root,
-      [Nodes.Macro, [Nodes.Symbol, 'render_div'], [Nodes.List]],
+      [
+        Nodes.Macro,
+        [Nodes.Symbol, 'render_div'],
+        [
+          Nodes.List,
+          [
+            KeywordArgs,
+            [Nodes.Pair, [Nodes.Symbol, 'foo'], [Nodes.Literal, 'bar']]
+          ]
+        ],
+        [
+          Nodes.List,
+          [Nodes.Output, [Nodes.Symbol, 'foo']],
+          [
+            Nodes.Output,
+            [Nodes.LookupVal, [Nodes.Symbol, 'kwargs'], [Nodes.Literal, 'baz']]
+          ]
+        ]
+      ],
       [
         Nodes.Output,
         [
