@@ -4,7 +4,8 @@
   "scripts": {
     "bootstrap": "lerna bootstrap --hoist",
     "build": "lerna run build",
-    "test": "lerna run test"
+    "test": "lerna run test",
+    "coverage": "lerna run coverage"
   },
   "license": "BSD-2",
   "devDependencies": {
