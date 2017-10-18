@@ -1,6 +1,7 @@
 # {% superjucks %} [WIP]
 
 [![Build Status](https://travis-ci.org/noahlange/superjucks.svg?branch=master)](https://travis-ci.org/noahlange/superjucks)
+[![Coverage Status](https://coveralls.io/repos/github/noahlange/superjucks/badge.svg?branch=master)](https://coveralls.io/github/noahlange/superjucks?branch=master)
 
 Superjucks is an *extremely* work-in-progress Jinja-style templating engine based on the Nunjucks codebase. With a flexible parser capable of emulating a variety of Jinja dialects and `async`-aware compilation, it hopes to (eventually) be a versatile and flexible iteration on Mozilla's excellent [Nunjucks](https://github.com/mozilla/nunjucks) templating engine.
 
