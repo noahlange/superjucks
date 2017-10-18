@@ -1,4 +1,4 @@
-export default function urlize(str: string, length: number, noFollow: boolean) {
+export default function urlize(str: string, length?: number, noFollow?: boolean) {
   if (isNaN(length)) {
     length = Infinity;
   }

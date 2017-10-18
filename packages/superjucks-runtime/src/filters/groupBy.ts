@@ -1,4 +1,4 @@
-export default function groupBy(obj: IterableIterator<any>, attr: string): object {
+export default function groupBy(obj: Iterable<any>, attr: string): object {
   const res: any = {};
   for (const value of obj) {
     const key = value[attr];

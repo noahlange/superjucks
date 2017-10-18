@@ -10,5 +10,5 @@ export default function truncate(input = '', length = 3, end: string = '...') {
   if (normalized.length <= length) {
     return orig;
   }
-  return copySafeness(orig, normalized.slice(0, length - 1).join(' ') + end);
+  return copySafeness(orig, normalized.slice(0, length).join(' ') + end);
 }

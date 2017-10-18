@@ -3,6 +3,7 @@
     "target": "esnext",
     "module": "commonjs",
     "rootDir": "src",
-    "outDir": "lib"
+    "outDir": "lib",
+    "inlineSourceMap": true
   }
 }

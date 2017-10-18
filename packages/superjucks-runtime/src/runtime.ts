@@ -2,9 +2,10 @@ import { escape, get, isObject, isString, toPairs } from 'lodash';
 
 const escaped = '__superjucks_escaped__';
 
-export function brandSafeString(str: string) {
-  Object.defineProperty(str, escaped, { value: true });
-  return str;
+export function brandSafeString(str: string): any {
+  const out = new String(str);
+  Object.defineProperty(out, escaped, { value: true });
+  return out;
 }
 
 export function brandedSafeString(str: string): boolean {

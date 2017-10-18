@@ -1,3 +1,3 @@
-export default function last(iterable: IterableIterator<any>) {
+export default function last(iterable: Iterable<any>) {
   return [ ...iterable ].pop();
 }

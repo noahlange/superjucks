@@ -9,7 +9,7 @@
     "moment": "^2.19.1"
   },
   "scripts": {
-    "test": ":",
-    "build": "tsc"
+    "build": "tsc",
+    "lint": "tslint --project tslint.json"
   }
 }

@@ -2,6 +2,7 @@ node_modules
 lib
 .nyc_output
 coverage
+lerna-debug.log
 yarn.lock
 package-lock.json
 .DS_Store

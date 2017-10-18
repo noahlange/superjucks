@@ -4,7 +4,7 @@ function normalize(value: any, defaultValue = '') {
   return value !== 0 && !value ? defaultValue : value;
 }
 
-export default function truncate(input = '', length = 255, breakWord: boolean, end: string = '...') {
+export default function truncate(input = '', length = 255, breakWord: boolean = false, end: string = '...') {
   const orig = input;
   let normalized = normalize(input);
   if (normalized.length <= length) {

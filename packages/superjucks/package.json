@@ -2,21 +2,11 @@
   "name": "superjucks",
   "description": "Nunjucks-inspired templating language from the future!",
   "version": "0.2.0",
-  "nyc": {
-    "reporter": [
-      "html",
-      "lcov"
-    ],
-    "exclude": [
-      "lib/tests"
-    ]
-  },
   "dependencies": {
     "superjucks-runtime": "0.2.0"
   },
   "scripts": {
     "build": "tsc",
-    "test": "tslint --project tslint.json && nyc ava -v lib/tests/**/*.js lib/tests/*.js",
-    "coverage": "nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls"
+    "lint": "tslint --project tslint.json"
   }
 }

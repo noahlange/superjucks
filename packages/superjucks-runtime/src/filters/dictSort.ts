@@ -1,6 +1,6 @@
 import { isObject, isString } from 'lodash';
 
-export default function dictsort(val: any, caseSensitive: boolean, by: string) {
+export default function dictsort(val: any, caseSensitive?: boolean, by?: string) {
   if (!isObject(val)) {
     throw new Error('dictsort filter: val must be an object');
   }
