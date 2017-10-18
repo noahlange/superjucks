@@ -11,6 +11,9 @@
       "lib/tests"
     ]
   },
+  "dependencies": {
+    "superjucks-runtime": "0.2.0"
+  },
   "scripts": {
     "build": "tsc",
     "test": "tslint --project tslint.json && nyc ava -v lib/tests/**/*.js lib/tests/*.js"
