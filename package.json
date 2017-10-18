@@ -1,6 +1,8 @@
 {
 	"name": "superjucks-lerna",
+	"version": "0.2.0",
 	"scripts": {
+		"build": "lerna run build",
 		"test": "lerna run test"
 	},
 	"devDependencies": {
