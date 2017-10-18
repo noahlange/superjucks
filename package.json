@@ -1,11 +1,16 @@
 {
-	"name": "superjucks-lerna",
-	"version": "0.2.0",
-	"scripts": {
-		"build": "lerna run build",
-		"test": "lerna run test"
-	},
-	"devDependencies": {
-		"lerna": "^2.0.0"
-	}
+  "name": "superjucks-lerna",
+  "version": "0.2.0",
+  "scripts": {
+    "build": "lerna run build",
+    "test": "lerna run test"
+  },
+  "devDependencies": {
+    "lerna": "^2.0.0",
+    "@types/node": "^8.0.34",
+    "ava": "^0.22.0",
+    "nyc": "^11.2.1",
+    "tslint": "^5.7.0",
+    "typescript": "^2.5.3"
+  }
 }

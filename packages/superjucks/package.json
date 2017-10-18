@@ -3,13 +3,6 @@
   "description": "Nunjucks-inspired templating language from the future!",
   "license": "BSD-2",
   "version": "0.2.0",
-  "devDependencies": {
-    "@types/node": "^8.0.34",
-    "ava": "^0.22.0",
-    "nyc": "^11.2.1",
-    "tslint": "^5.7.0",
-    "typescript": "^2.5.3"
-  },
   "nyc": {
     "reporter": [
       "html",
