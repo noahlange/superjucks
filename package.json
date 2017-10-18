@@ -1,0 +1,9 @@
+{
+	"name": "superjucks-lerna",
+	"scripts": {
+		"test": "lerna run test"
+	},
+	"devDependencies": {
+		"lerna": "^2.0.0"
+	}
+}
