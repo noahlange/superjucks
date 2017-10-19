@@ -14,22 +14,7 @@ export async function compile(src: string, config: Config) {
 
 export default class Compiler {
   public buffer: string[] = [];
-  protected currentIndent: number = 0;
-
-  public compileAggregate(node: Node, frame: Frame, start?: any, end?: any) {
-    if (start) {
-      this.emit(start);
-    }
-    for (let i = 0; i < node.children.length; i++) {
-      if (i > 0) {
-        this.emit(', ', false);
-      }
-      node.children[i].compile(this, frame);
-    }
-    if (end) {
-      this.emit(end);
-    }
-  }
+  public currentIndent: number = 0;
 
   public getValueOf(val: string | Node): string | Node {
     while (typeof val !== 'string') {
@@ -48,7 +33,7 @@ export default class Compiler {
     this.currentIndent -= indent;
   }
 
-  public emitInlineComment(str: string) {
+  public emitComment(str: string) {
     this.emitLine(`// ${str}`);
   }
 

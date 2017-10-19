@@ -8,6 +8,6 @@ export default class CaseNode extends Node {
   public body: Node;
 
   public compile(compiler: Compiler, frame: Frame) {
-    return;
+    this.body.compile(compiler, frame);
   }
 }

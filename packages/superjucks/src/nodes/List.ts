@@ -4,7 +4,9 @@ import Node from '../Node';
 import Aggregate from './Aggregate';
 
 export default class ListNode extends Aggregate {
-  public compile() {
-    return;
+  public compile(compiler: Compiler, frame: Frame) {
+    compiler.emit('(', false);
+    super.compile(compiler, frame);
+    compiler.emit(')', false);
   }
 }

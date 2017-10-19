@@ -4,7 +4,18 @@ import Node from '../Node';
 
 export default class LiteralNode extends Node {
   public value: Node | string;
-  public compile() {
-    return;
+  public compile(compiler: Compiler) {
+    if (typeof this.value === 'string') {
+      let val = this.value.replace(/\\/g, '\\\\');
+      val = val.replace(/\'/g, `\\'`);
+      val = val.replace(/\n/g, '\\n');
+      val = val.replace(/\r/g, '\\r');
+      val = val.replace(/\t/g, '\\t');
+      compiler.emit(`'${val}'`, false);
+    } else if (this.value === null) {
+      compiler.emit('null', false);
+    } else {
+      compiler.emit(this.value.toString(), false);
+    }
   }
 }

@@ -16,7 +16,10 @@ export default class AddNode extends Node {
 
   public left: Node;
   public right: Node;
+
   public compile(compiler: Compiler, frame: Frame): void {
-    return;
+    compiler.compile(this.left, frame);
+    compiler.emit(' + ', false);
+    compiler.compile(this.right, frame);
   }
 }
