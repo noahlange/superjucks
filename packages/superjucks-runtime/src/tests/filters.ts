@@ -59,12 +59,27 @@ test('default should provide a default value for a lookup', async t => {
 test('dictSort should allow the user to sort a dictionary', async t => {
   t.is(
     filters
-      .dictSort({ e: 5, a: 1, c: 3, b: 2, d: 4 })
+      .dictSort({ e: 'foo', a: 'bar', c: 'baz', b: 'bye' }, false, 'value')
       .map(a => a[1])
       .join(''),
-    '12345'
+    'barbazbyefoo'
   );
 });
+
+test('dictSort should puke on scalars', t => {
+  t.throws(() => filters.dictSort('123'));
+});
+
+test('should require sorts to be by key or value', t => {
+  t.is(filters.dictSort({ one: 'baz', two: 'bar' }, true, 'key').map(a => a[0]).join(''), 'onetwo');
+  t.is(filters.dictSort({ one: 'baz', two: 3 }, false, 'value').map(a => a[1]).join(''), 'baz3');
+  t.is(filters.dictSort({ one: 2, two: 'bar' }, false, 'value').map(a => a[1]).join(''), '2bar');
+  t.is(filters.dictSort({ one: 'bar', two: 'bar' }, true, 'value').map(a => a[1]).join(''), 'barbar');
+})
+
+test('should require sorts to be by key or value', t => {
+  t.throws(() => filters.dictSort([ { one: { foo: 'baz' }, two: { foo: 'bar' }}], true, 'purple'));
+})
 
 test('dump should JSONify an object', async t => {
   t.is(filters.dump({ foo: 'bar' }), JSON.stringify({ foo: 'bar' }, null, 2));
@@ -223,7 +238,10 @@ test('select should filter out keys of items with falsy values', async t => {
 });
 
 test('sum should sum the properties of an object by key', t => {
-  t.is(filters.sum([ { one: '1'}, { one: '2'}, { one: '3' } ], 'one', ''), '123');
+  t.is(
+    filters.sum([{ one: '1' }, { one: '2' }, { one: '3' }], 'one', ''),
+    '123'
+  );
 });
 
 test('toCase should change the case of a string', async t => {
@@ -258,5 +276,29 @@ test('stirp tags should stripe the tags from an html string', t => {
 });
 
 test('urlize is not my code and does magical things', t => {
-  t.is(filters.urlize('foo http://www.example.com/ bar'), `foo <a href="http://www.example.com/">http://www.example.com/</a> bar`);
+  t.is(
+    filters.urlize('foo http://www.example.com/ bar'),
+    `foo <a href="http://www.example.com/">http://www.example.com/</a> bar`
+  );
+});
+
+test('sort should just defer to localeSort', t => {
+  t.deepEqual(filters.sort([5, 3, 2, 4, 1]), [1, 2, 3, 4, 5]);
+});
+
+test('safe brands a string as a SafeString (once)', t => {
+  const str = filters.safe('FOOBAR');
+  t.is(filters.safe(str), str);
+});
+
+test('length returns the length of a thingy', t => {
+  const arr = [1, 2, 3, 4, 5]; // 5
+  const set = new Set(arr); // 5
+  const map = new Map([[1, 2], [3, 4]]); // 2
+  const hash = { one: 1 }; // 1
+
+  t.is(filters.length(arr), 5);
+  t.is(filters.length(set), 5);
+  t.is(filters.length(map), 2);
+  t.is(filters.length(hash), 1);
 });
