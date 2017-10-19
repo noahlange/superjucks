@@ -1,4 +1,4 @@
-import { brandSafeString, brandedSafeString } from '../runtime';
+import { brandedSafeString, brandSafeString } from '../runtime';
 
 export default function safe(str: string): string {
   if (brandedSafeString(str)) {

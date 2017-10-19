@@ -3,6 +3,7 @@ import { escape, get, isObject, isString, toPairs } from 'lodash';
 const escaped = '__superjucks_escaped__';
 
 export function brandSafeString(str: string): any {
+  // tslint:disable-next-line no-construct
   const out = new String(str);
   Object.defineProperty(out, escaped, { value: true });
   return out;
