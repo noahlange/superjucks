@@ -7,7 +7,7 @@ test('should compile a literal number', async t => {
   t.is(await compile(ast), '1');
 });
 
-test('should compile a literal string', async t =>{
+test('should compile a literal string', async t => {
   const ast = new Nodes.Literal(0, 0, { value: 'foobar' });
   t.is(await compile(ast), '\'foobar\'');
 });

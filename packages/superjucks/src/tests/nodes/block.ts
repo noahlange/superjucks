@@ -1,6 +1,6 @@
 import test, { TestContext } from 'ava';
 import * as Nodes from '../../nodes/index';
-import { ast as p } from '../Parser';
+import { ast as p } from '../helpers/parse';
 
 test('should parse block tags', t => {
   t.deepEqual(p('{% block foo %}stuff{% endblock %}'), [

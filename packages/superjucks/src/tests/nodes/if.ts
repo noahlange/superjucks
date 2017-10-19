@@ -1,6 +1,6 @@
 import test from 'ava';
 import * as Nodes from '../../nodes/index';
-import { ast as p } from '../Parser';
+import { ast as p } from '../helpers/parse';
 
 test('should parse if blocks', t => {
   t.deepEqual(p('{% if foo %}{{ foo }}{% else if bar %}{{ bar }}{% endif %}'), [

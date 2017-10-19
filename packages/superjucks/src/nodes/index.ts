@@ -41,8 +41,10 @@ import Root from './Root';
 // blocks
 import Block from './Block';
 import Case from './Case';
+import Export from './Export';
 import For from './For';
 import If from './If';
+import Import from './Import';
 import Macro from './Macro';
 import Set from './Set';
 import Switch from './Switch';
@@ -63,11 +65,13 @@ export {
   Dict,
   Div,
   Elvis,
+  Export,
   Filter,
   For,
   FloorDiv,
   FunctionCall,
   If,
+  Import,
   In,
   Is,
   Literal,

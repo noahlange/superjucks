@@ -1,7 +1,7 @@
 import test from 'ava';
 import * as Nodes from '../../nodes/index';
 import compile from '../helpers/compile';
-import { ast as p } from '../Parser';
+import { ast as p } from '../helpers/parse';
 
 test('should parse switch blocks', t => {
   t.deepEqual(

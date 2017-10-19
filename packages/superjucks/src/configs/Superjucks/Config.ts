@@ -84,13 +84,13 @@ export default class Superjucks extends Config {
   public tests = {};
   public tags = {
     Block: Nodes.Block,
+    Export: Nodes.Export,
     Extends: Nodes.Filter,
     For: Nodes.For,
     If: Nodes.If,
+    Import: Nodes.Import,
     Macro: Nodes.Macro,
     Set: Nodes.Set,
-    // Export: Nodes.Export,
-    // Import: Nodes.Import,
     // Raw: Nodes.Raw,
     Switch: Nodes.Switch,
     // Unless: Nodes.Unless
