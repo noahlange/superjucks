@@ -11,7 +11,9 @@ export default class NotNode extends Node {
       ? new NotNode(tok.line, tok.col, { body: this.parse(parser, next) })
       : next();
   }
-  public compile() {
-    return;
+  public compile(compiler: Compiler, frame: Frame) {
+    compiler.emit('!(', false);
+    compiler.compile(this.body, frame);
+    compiler.emit(')', false);
   }
 }
