@@ -71,15 +71,45 @@ test('dictSort should puke on scalars', t => {
 });
 
 test('should require sorts to be by key or value', t => {
-  t.is(filters.dictSort({ one: 'baz', two: 'bar' }, true, 'key').map(a => a[0]).join(''), 'onetwo');
-  t.is(filters.dictSort({ one: 'baz', two: 3 }, false, 'value').map(a => a[1]).join(''), 'baz3');
-  t.is(filters.dictSort({ one: 2, two: 'bar' }, false, 'value').map(a => a[1]).join(''), '2bar');
-  t.is(filters.dictSort({ one: 'bar', two: 'bar' }, true, 'value').map(a => a[1]).join(''), 'barbar');
-})
+  t.is(
+    filters
+      .dictSort({ one: 'baz', two: 'bar' }, true, 'key')
+      .map(a => a[0])
+      .join(''),
+    'onetwo'
+  );
+  t.is(
+    filters
+      .dictSort({ one: 'baz', two: 3 }, false, 'value')
+      .map(a => a[1])
+      .join(''),
+    'baz3'
+  );
+  t.is(
+    filters
+      .dictSort({ one: 2, two: 'bar' }, false, 'value')
+      .map(a => a[1])
+      .join(''),
+    '2bar'
+  );
+  t.is(
+    filters
+      .dictSort({ one: 'bar', two: 'bar' }, true, 'value')
+      .map(a => a[1])
+      .join(''),
+    'barbar'
+  );
+});
 
 test('should require sorts to be by key or value', t => {
-  t.throws(() => filters.dictSort([ { one: { foo: 'baz' }, two: { foo: 'bar' }}], true, 'purple'));
-})
+  t.throws(() =>
+    filters.dictSort(
+      [{ one: { foo: 'baz' }, two: { foo: 'bar' } }],
+      true,
+      'purple'
+    )
+  );
+});
 
 test('dump should JSONify an object', async t => {
   t.is(filters.dump({ foo: 'bar' }), JSON.stringify({ foo: 'bar' }, null, 2));
@@ -268,6 +298,9 @@ test('truncate words should truncate x words of arbitrary length to n words', as
     filters.truncateWords('The cat came back the very next day', 4, '...'),
     'The cat came back...'
   );
+  t.is(
+    filters.truncateWords('Oh hi, Mark!', 4), 'Oh hi, Mark!'
+  );
 });
 
 test('stirp tags should stripe the tags from an html string', t => {
@@ -286,6 +319,13 @@ test('sort should just defer to localeSort', t => {
   t.deepEqual(filters.sort([5, 3, 2, 4, 1]), [1, 2, 3, 4, 5]);
 });
 
+test('sortby should allow sorting by property in an array of objects', t => {
+  t.deepEqual(filters.sortBy([{ foo: 'mark' }, { foo: 'hi' }], 'foo'), [
+    { foo: 'hi' },
+    { foo: 'mark' }
+  ]);
+});
+
 test('safe brands a string as a SafeString (once)', t => {
   const str = filters.safe('FOOBAR');
   t.is(filters.safe(str), str);
@@ -301,4 +341,8 @@ test('length returns the length of a thingy', t => {
   t.is(filters.length(set), 5);
   t.is(filters.length(map), 2);
   t.is(filters.length(hash), 1);
+});
+
+test('upper should uppercase a string', t => {
+  t.is(filters.upper('foo'), 'FOO');
 });

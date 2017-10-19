@@ -15,6 +15,7 @@ test('defined should detect nulls and undefineds', async t => {
 test('divisibleBy should detect whether a number/number-string is divisible by another thing', async t => {
   t.is(tests.divisibleBy('6', 3), true);
   t.is(tests.divisibleBy(4, 3), false);
+  t.is(tests.divisibleBy(6, '3'), true);
 });
 
 test('escaped should detect whether something is escaped', async t => {
