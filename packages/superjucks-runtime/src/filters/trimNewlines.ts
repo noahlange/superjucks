@@ -1,3 +1,3 @@
-export default function trimNewlines(str: string) {
-  return str.replace('\n', '');
+export default function trimNewlines(str: string, replace: string = '') {
+  return str.replace('\n', replace);
 }

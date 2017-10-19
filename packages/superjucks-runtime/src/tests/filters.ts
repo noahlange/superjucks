@@ -4,6 +4,7 @@ import * as filters from '../filters/index';
 test('abs should return the absolute value of a number', t => {
   t.is(filters.abs(-3.5), 3.5);
   t.is(filters.abs('3.5'), 3.5);
+  t.is(filters.abs(NaN), NaN);
 });
 
 test('append should concatenate two strings', async t => {
@@ -12,10 +13,10 @@ test('append should concatenate two strings', async t => {
 
 test('batch should return an n-length array of arrays', async t => {
   const batched = filters
-    .batch([1, 2, 3, 4, 5], 2, 'foobar')
+    .batch([1, 2, 3, 4, 5], 2)
     .map(a => a.join(''))
     .join('\n');
-  t.is(batched, '123\n45foobar');
+  t.is(batched, '123\n45');
 });
 
 test('capitalize should naïvely capitalize a string', async t => {
@@ -25,12 +26,13 @@ test('capitalize should naïvely capitalize a string', async t => {
 test('ceil should provide the ceil of an number', async t => {
   t.is(filters.ceil(-3.5), -3);
   t.is(filters.ceil('3.5'), 4);
+  t.is(filters.ceil(NaN), NaN);
 });
 
 test('center should center a string in another string', async t => {
   t.is(filters.center('ZARGOTHRAX', 4), 'ZARG');
   t.is(filters.center('ZARGOTHRAX', 32), '           ZARGOTHRAX           ');
-  t.is(filters.center('', 32), '                                ');
+  t.is(filters.center(), '                                                                                ');
 });
 
 test('chunk should chunk an array into n-lengthed arrays', async t => {
@@ -38,7 +40,14 @@ test('chunk should chunk an array into n-lengthed arrays', async t => {
     .chunk([1, 2, 3, 4, 5], 2, 'foobar')
     .map(a => a.join(''))
     .join('\n');
+
+  const chunked2 = filters
+    .chunk([ 1, 2, 3, 4 ], 2)
+    .map(a => a.join(''))
+    .join('\n');
+
   t.is(chunked, '12\n34\n5foobar');
+  t.is(chunked2, '12\n34');
 });
 
 test('compact should remove duplicates from an array', async t => {
@@ -272,6 +281,8 @@ test('sum should sum the properties of an object by key', t => {
     filters.sum([{ one: '1' }, { one: '2' }, { one: '3' }], 'one', ''),
     '123'
   );
+
+  t.is(filters.sum([ 1, 2, 3, 4, 5 ]), 15);
 });
 
 test('toCase should change the case of a string', async t => {
@@ -345,4 +356,33 @@ test('length returns the length of a thingy', t => {
 
 test('upper should uppercase a string', t => {
   t.is(filters.upper('foo'), 'FOO');
+});
+
+test('reverse should reverse a string or array', t => {
+  t.is(filters.reverse('foobar'), 'raboof');
+  t.deepEqual(filters.reverse([ 1, 2, 3, 4, 5 ]), [ 5, 4, 3, 2, 1 ]);
+});
+
+test('string should stringify a value', t => {
+  t.is(filters.string({}), '[object Object]');
+  t.is(filters.string(12345), '12345');
+});
+
+test('unique should filter out repeated items from an array', t => {
+  t.deepEqual(filters.unique([ 1, 2, 3, 3, 2, 1 ]), [ 1, 2, 3 ]);
+});
+
+test('trim newlines should trim a string of line breaks', t => {
+  t.is(filters.trimNewlines('foobly\nwoobly'), 'fooblywoobly');
+  t.is(filters.trimNewlines('foobly\nwoobly', ' '), 'foobly woobly');
+});
+
+test('replace should replace a substring of a string', t => {
+  t.is(filters.replace('thisisastringisa', 'isa'), 'thisstring');
+  t.is(filters.replace('thisisastringisa', 'isa', 'wasa'), 'thiswasastringwasa');
+});
+
+test('replaceFirst should replace the first instance of a substring of a string', t => {
+  t.is(filters.replaceFirst('thisisastringisa', 'isa'), 'thisstringisa');
+  t.is(filters.replaceFirst('thisisastringisa', 'isa', 'wasa'), 'thiswasastringisa');
 });
