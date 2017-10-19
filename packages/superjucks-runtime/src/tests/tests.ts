@@ -1,6 +1,6 @@
 import test from 'ava';
-import * as tests from '../test/index';
 import * as filters from '../filters/index';
+import * as tests from '../test/index';
 
 test('callable should detect callability', async t => {
   t.is(tests.callable(() => '!!!'), true);
@@ -52,7 +52,7 @@ test('lower should report the lowercaseness of a string', async t => {
 test('upper should report the uppercaseness of a string', async t => {
   t.is(tests.upper('FRANCIS'), true);
   t.is(tests.upper('francis'), false);
-})
+});
 
 test('greaterThan should detect whether a value is greater than another', async t => {
   t.is(tests.greaterThan(0, 25), false);

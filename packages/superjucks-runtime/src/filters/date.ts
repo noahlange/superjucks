@@ -1,5 +1,5 @@
 import * as moment from 'moment';
 
-export default function date(date: Date, formatString: string) {
-  return moment(date).format(formatString);
+export default function date(input: Date, formatString: string) {
+  return moment(input).format(formatString);
 }

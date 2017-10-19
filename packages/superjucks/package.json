@@ -9,6 +9,6 @@
   },
   "scripts": {
     "build": "tsc",
-    "lint": "tslint --project tslint.json"
+    "lint": "tslint --project ../../tslint.json"
   }
 }
