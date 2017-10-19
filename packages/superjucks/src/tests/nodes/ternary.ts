@@ -1,11 +1,11 @@
 import test, { TestContext } from 'ava';
 import { Environment } from 'superjucks-runtime';
 
-import { compile } from '../../Compiler';
 import Config from '../../Config';
 import Superjucks from '../../configs/Superjucks/Config';
 import * as Nodes from '../../nodes/index';
-import { ast as p  } from '../Parser';
+import compile from '../helpers/compile';
+import { ast as p } from '../Parser';
 
 test('should throw when operator not included in config', async t => {
   t.throws(
@@ -16,7 +16,7 @@ test('should throw when operator not included in config', async t => {
 
 test('should parse successfully when operator exists', async t => {
   class WithTernary extends Superjucks {
-    public operators = [ Nodes.Ternary ];
+    public operators = [Nodes.Ternary];
   }
   t.notThrows(() => p('{{ foo ? bar: baz }}', new WithTernary()));
 });
@@ -34,4 +34,22 @@ test('should parse ternaries', t => {
       ]
     ]
   ]);
+});
+
+test('should compile a ternary node', async t => {
+  const condNode = new Nodes.Symbol(0, 0, { value: 'bar' });
+  const bodyNode = new Nodes.Literal(0, 0, { value: 'foo' });
+  const elseNode = new Nodes.Literal(0, 0, { value: null });
+  const astOne = new Nodes.Ternary(0, 0, {
+    body: bodyNode,
+    cond: condNode,
+    else: elseNode
+  });
+  const astTwo = new Nodes.Ternary(0, 0, {
+    body: bodyNode,
+    cond: condNode
+  });
+
+  t.is(await compile(astOne), 'lookup(\'bar\') ? \'foo\' : null');
+  t.is(await compile(astTwo), 'lookup(\'bar\') ? \'foo\' : \'\'');
 });

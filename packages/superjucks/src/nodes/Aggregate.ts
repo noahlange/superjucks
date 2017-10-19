@@ -10,8 +10,13 @@ export default class AggregateNode extends Node {
     this.children.push(node);
   }
 
-  public compile() {
-    return;
+  public compile(compiler: Compiler, frame: Frame): void {
+    for (let i = 0; i < this.children.length; i++) {
+      if (i > 0) {
+        compiler.emit(', ', false);
+      }
+      this.children[i].compile(compiler, frame);
+    }
   }
 
   public constructor(line: number, col: number, args: any = {}) {

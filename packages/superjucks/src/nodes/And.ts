@@ -12,7 +12,9 @@ export default class AndNode extends Node {
     }
     return node;
   }
-  public compile() {
-    return;
+  public compile(compiler: Compiler, frame: Frame): void {
+    compiler.compile(this.left, frame);
+    compiler.emit(' && ', false);
+    compiler.compile(this.right, frame);
   }
 }

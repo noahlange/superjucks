@@ -32,6 +32,7 @@ import Sub from './Sub';
 import Ternary from './Ternary';
 
 // utils
+import Aggregate from './Aggregate';
 import Assign from './Assign';
 import Capture from './Capture';
 import CompareOperand from './CompareOperand';
@@ -48,6 +49,7 @@ import Switch from './Switch';
 
 export {
   Add,
+  Aggregate,
   And,
   Array,
   Assign,

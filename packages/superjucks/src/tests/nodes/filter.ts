@@ -7,7 +7,7 @@ import Superjucks from '../../configs/Superjucks/Config';
 import * as Nodes from '../../nodes/index';
 import { parse } from '../../Parser';
 
-test('Filter::parse - should throw when operator not included in config', async t => {
+test('should throw when operator not included in config', async t => {
   class NoFilter extends Config {
     public operators = [];
   }
@@ -17,7 +17,7 @@ test('Filter::parse - should throw when operator not included in config', async 
   );
 });
 
-test('Filter::parse - should throw when filter does not exist', async t => {
+test('should throw when filter does not exist', async t => {
   const config = new Config();
   config.operators.push(Nodes.Filter);
   t.throws(
@@ -26,7 +26,7 @@ test('Filter::parse - should throw when filter does not exist', async t => {
   );
 });
 
-test('Filter::parse - should parse successfully when operator and filter exist', async t => {
+test('should parse successfully when operator and filter exist', async t => {
   const config = new Config();
   // should find a better API for this
   config.operators.push(Nodes.Filter);

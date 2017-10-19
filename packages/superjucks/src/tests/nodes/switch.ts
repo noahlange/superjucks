@@ -1,5 +1,6 @@
 import test from 'ava';
 import * as Nodes from '../../nodes/index';
+import compile from '../helpers/compile';
 import { ast as p } from '../Parser';
 
 test('should parse switch blocks', t => {
@@ -65,4 +66,10 @@ test('should throw on blocks without endswitches', t => {
 
 test('should throw on blocks that start with something other than a case or default', t => {
   t.throws(() => p(`{% switch foo %}{% set foo = "bar" %}{% endswitch %}`));
+});
+
+test('case should compile to the case body', async t => {
+  const body = new Nodes.Literal(0, 0, { value: 42 });
+  const ast = new Nodes.Case(0, 0, { body });
+  t.is(await compile(ast), '42');
 });
