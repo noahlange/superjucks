@@ -67,3 +67,17 @@ test('compiler#compile() should throw if compile method breaks', async t => {
   const c = new Compiler();
   await t.throws(c.compile(node, frame));
 });
+
+test('compiler#getValueOf() should attempt to retrive the value of a node', async t => {
+  const literal = new Nodes.Literal(0, 0, { value: 'CASTING' });
+  const symbol = new Nodes.Symbol(0, 0, { value: 'GNITSAC' });
+  const fn = new Nodes.FunctionCall(0, 0, { name: 'myFn' });
+  const c = new Compiler();
+  t.is(c.getValueOf(literal), 'CASTING');
+  t.is(c.getValueOf(symbol), 'GNITSAC');
+  t.is(c.getValueOf(fn), 'myFn');
+});
+
+test('compile should attempt to compile a string; currently a no-op', async t => {
+  t.is(await compile('{{ foo }}', new Superjucks()), '');
+});
