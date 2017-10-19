@@ -3,27 +3,21 @@ import Frame from '../Frame';
 import { Token } from '../Lexer';
 import Node from '../Node';
 import Parser from '../Parser';
-
-import ArrayNode from './Array';
-import DictNode from './Dict';
-import PairNode from './Pair';
-import SymbolNode from './Symbol';
+import * as Nodes from './index';
 
 export default class ExportNode extends Node {
   public static parse(parser: Parser) {
     const tag = parser.config.syntax.tags.EXPORT;
     const tok = parser.peekToken();
+    parser.skipValue(Token.SYMBOL, tag);
     let exports;
-    if (!parser.skipValue(Token.SYMBOL, tag)) {
-      throw new Error(`parser: expected "${ tag }" at (${ tok.line }, ${ tok.col })`);
-    }
     if (parser.skipValue(Token.SYMBOL, parser.config.syntax.keywords.DEFAULT)) {
       const next = parser.peekToken();
-      const pair = new PairNode(next.line, next.col, {
-        key: new SymbolNode(next.line, next.col, { value: 'default' }),
+      const pair = new Nodes.Pair(next.line, next.col, {
+        key: new Nodes.Symbol(next.line, next.col, { value: 'default' }),
         value: parser.parseExpression()
       });
-      exports = new DictNode(next.line, next.col, { children: [ pair ] });
+      exports = new Nodes.Dict(next.line, next.col, { children: [ pair ] });
     } else {
       exports = parser.parseExpression();
     }
@@ -33,7 +27,7 @@ export default class ExportNode extends Node {
     return node;
   }
 
-  public exports: ArrayNode;
+  public exports: Nodes.Array;
 
   public compile(compiler: Compiler, frame: Frame) {
     return;
