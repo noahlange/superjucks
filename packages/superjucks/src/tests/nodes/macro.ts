@@ -1,6 +1,6 @@
 import test from 'ava';
 import * as Nodes from '../../nodes/index';
-import { ast as p } from '../Parser';
+import { ast as p } from '../helpers/parse';
 
 test('should parse default function parameters', t => {
   t.deepEqual(p('{% macro foo(bar, baz = 2) %}{{ bar }}{% endmacro %}'), [

@@ -268,7 +268,7 @@ export default class Parser {
     const nodes = this.config.tags as any;
 
     if (tok.type !== Token.SYMBOL) {
-      throw new Error(`tag name expected (${tok.line}, ${tok.col})`);
+      throw new Error(`tag name "${ tok.value }" expected (${tok.line}, ${tok.col})`);
     }
 
     if (this.breakOnBlocks && this.breakOnBlocks.indexOf(tok.value) !== -1) {

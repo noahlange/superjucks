@@ -5,7 +5,7 @@ export default class Frame {
   public parent: Frame  | null = null;
   public isolateWrites: boolean;
 
-  public set(name: string, val: string, resolveUp: boolean = false): void {
+  public set(name: string, val: any, resolveUp: boolean = false): void {
     // Allow variables with dots by automatically creating the nested structure
     let frame: this | Frame | null = this;
     const obj = this.variables;

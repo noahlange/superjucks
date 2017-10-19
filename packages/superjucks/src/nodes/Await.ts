@@ -16,7 +16,8 @@ export default class AwaitNode extends Node {
     return node;
   }
   public body: any;
-  public compile() {
-    return;
+  public compile(compiler: Compiler, frame: Frame) {
+    compiler.emit('await ');
+    compiler.compile(this.body, frame);
   }
 }

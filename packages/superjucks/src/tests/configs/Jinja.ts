@@ -5,7 +5,7 @@ import Slice from '../../configs/Jinja2/nodes/Slice';
 import Parser from '../../configs/Jinja2/Parser';
 import { lex } from '../../Lexer';
 import * as Nodes from '../../nodes/index';
-import { transform } from '../Parser';
+import { transform } from '../helpers/parse';
 
 export function p(s: string): any {
   const lexer = lex(s);

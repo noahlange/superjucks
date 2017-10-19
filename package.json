@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "scripts": {
     "bootstrap": "lerna bootstrap --hoist",
-    "build": "lerna run build",
+    "build": "lerna run build && lerna run lint",
     "test": "nyc ava --verbose packages/*/lib/tests/**/*.js packages/*/lib/tests/*.js",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },

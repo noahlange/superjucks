@@ -5,7 +5,7 @@ import Config from '../../Config';
 import Superjucks from '../../configs/Superjucks/Config';
 import * as Nodes from '../../nodes/index';
 import compile from '../helpers/compile';
-import { ast as p } from '../Parser';
+import { ast as p } from '../helpers/parse';
 
 test('should throw when operator not included in config', async t => {
   t.throws(

@@ -14,6 +14,7 @@ export async function compile(src: string, config: Config) {
 
 export default class Compiler {
   public buffer: string[] = [];
+  public template: string;
   public currentIndent: number = 0;
 
   public getValueOf(val: string | Node): string | Node {
@@ -25,6 +26,14 @@ export default class Compiler {
       }
     }
     return val;
+  }
+
+  /*
+   * https://gist.github.com/gordonbrander/2230317
+   * As an alternative to something like shortid...
+   */
+  public id() {
+    return '_' + Math.random().toString(36).substr(2, 9);
   }
 
   public indent(callback: () => void, indent = 1) {
