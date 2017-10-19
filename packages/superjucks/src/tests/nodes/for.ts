@@ -9,7 +9,7 @@ test('should parse for blocks', t => {
       Nodes.For,
       [Nodes.Array, [Nodes.Literal, 1], [Nodes.Literal, 2]],
       [Nodes.Symbol, 'x'],
-      [Nodes.List, [Nodes.Output, [Nodes.Symbol, 'x']]],
+      [Nodes.Aggregate, [Nodes.Output, [Nodes.Symbol, 'x']]],
       null,
       null
     ]
@@ -30,7 +30,7 @@ test('should attempt to destructure variables', t => {
         ],
         [Nodes.Array, [Nodes.Symbol, 'x'], [Nodes.Symbol, 'y']],
         [
-          Nodes.List,
+          Nodes.Aggregate,
           [Nodes.Output, [Nodes.Symbol, 'x']],
           [Nodes.Output, [Nodes.Symbol, 'y']]
         ],
@@ -49,7 +49,7 @@ test('should attempt to destructure variables', t => {
       [Nodes.Array],
       [Nodes.Dict, [Nodes.Symbol, 'x'], [Nodes.Symbol, 'y']],
       [
-        Nodes.List,
+        Nodes.Aggregate,
         [Nodes.Output, [Nodes.Symbol, 'x']],
         [Nodes.Output, [Nodes.Symbol, 'y']]
       ],
@@ -67,7 +67,7 @@ test('should attempt to unpack key-valued objects', t => {
       [Nodes.Dict],
       [Nodes.Array, [Nodes.Symbol, 'x'], [Nodes.Symbol, 'y']],
       [
-        Nodes.List,
+        Nodes.Aggregate,
         [Nodes.Output, [Nodes.Symbol, 'x']],
         [Nodes.Output, [Nodes.Symbol, 'y']]
       ],
@@ -87,7 +87,7 @@ test('should attempt to unpack key-valued objects', t => {
         [Nodes.FunctionCall, [Nodes.Symbol, 'asyncGenerator'], [Nodes.List]],
         [Nodes.Symbol, 'x'],
         [
-          Nodes.List,
+          Nodes.Aggregate,
           [Nodes.Output, [Nodes.Symbol, 'x']],
           [Nodes.Output, [Nodes.Symbol, 'y']]
         ],

@@ -52,17 +52,18 @@ export default class Compiler {
   }
 
   public emitLine(code: string) {
-    this.buffer.push(code + '\n');
+    const w = '  '.repeat(this.currentIndent);
+    this.buffer.push(w + code + '\n');
   }
 
   public emitWrite(fn: () => void) {
-    this.emit('this.buf.write(');
+    this.emit('buffer.write(');
     fn();
     this.emit(');\n', false);
   }
 
   public emitEscape(fn: () => void) {
-    this.emit('this.buf.esc(');
+    this.emit('buffer.esc(');
     fn();
     this.emit(');\n', false);
   }

@@ -4,7 +4,7 @@ import Node from '../Node';
 
 export default class LiteralNode extends Node {
   public value: Node | string;
-  public compile(compiler: Compiler) {
+  public compile(compiler: Compiler, frame: Frame) {
     if (typeof this.value === 'string') {
       let val = this.value.replace(/\\/g, '\\\\');
       val = val.replace(/\'/g, `\\'`);

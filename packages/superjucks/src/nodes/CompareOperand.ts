@@ -5,8 +5,9 @@ import Node from '../Node';
 
 export default class CompareOperandNode extends Node {
   public expr: Node;
-  public type: Token;
-  public compile() {
-    return;
+  public type: string;
+  public compile(compiler: Compiler, frame: Frame) {
+    compiler.emit(` ${ this.type } `, false);
+    compiler.compile(this.expr, frame);
   }
 }

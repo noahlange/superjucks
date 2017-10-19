@@ -47,6 +47,9 @@ export default class CompareNode extends Node {
   public ops: Nodes.CompareOperand[];
 
   public compile(compiler: Compiler, frame: Frame) {
-    return;
+    compiler.compile(this.expr, frame);
+    for (const op of this.ops) {
+      compiler.compile(op, frame);
+    }
   }
 }

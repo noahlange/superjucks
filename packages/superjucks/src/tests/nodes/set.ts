@@ -22,7 +22,7 @@ test('should parse set blocks', t => {
       Nodes.Set,
       [Nodes.Array, [Nodes.Symbol, 'foo']],
       null,
-      [Nodes.Capture, [Nodes.List, [Nodes.Output, [Nodes.Literal, 'bar']]]]
+      [Nodes.Capture, [Nodes.Aggregate, [Nodes.Output, [Nodes.Literal, 'bar']]]]
     ]
   ]);
 });

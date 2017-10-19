@@ -25,7 +25,7 @@ test('should parse array slices with start/stop', t => {
         [Slice, [Nodes.Literal, 1], [Nodes.Literal, 4], [Nodes.Literal, null]]
       ],
       [Nodes.Symbol, 'i'],
-      [Nodes.List, [Nodes.Output, [Nodes.Symbol, 'i']]],
+      [Nodes.Aggregate, [Nodes.Output, [Nodes.Symbol, 'i']]],
       null,
       null
     ]
@@ -48,7 +48,7 @@ test('should support array slices using expressions', t => {
         ]
       ],
       [Nodes.Symbol, 'i'],
-      [Nodes.List, [Nodes.Output, [Nodes.Symbol, 'i']]],
+      [Nodes.Aggregate, [Nodes.Output, [Nodes.Symbol, 'i']]],
       null,
       null
     ]
@@ -135,7 +135,7 @@ test('should allow kwargs to be called inside macro', t => {
           ]
         ],
         [
-          Nodes.List,
+          Nodes.Aggregate,
           [Nodes.Output, [Nodes.Symbol, 'foo']],
           [
             Nodes.Output,

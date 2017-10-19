@@ -36,7 +36,7 @@ export default class Parser {
   public parseUntilBlocks(...blockNames: any[]) {
     const prev = this.breakOnBlocks;
     this.breakOnBlocks = blockNames;
-    const ret = new Nodes.List(0, 0, { children: this.parseNodes() });
+    const ret = new Nodes.Aggregate(0, 0, { children: this.parseNodes() });
     this.breakOnBlocks = prev;
     return ret;
   }

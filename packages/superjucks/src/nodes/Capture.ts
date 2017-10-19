@@ -6,7 +6,7 @@ import Parser from '../Parser';
 export default class CaptureNode extends Node {
   public body: any;
   public target: any;
-  public compile() {
+  public compile(compiler: Compiler, frame: Frame) {
     return;
   }
 }

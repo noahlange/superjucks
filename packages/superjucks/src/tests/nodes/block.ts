@@ -8,7 +8,7 @@ test('should parse block tags', t => {
     [
       Nodes.Block,
       [Nodes.Symbol, 'foo'],
-      [Nodes.List, [Nodes.Output, [Nodes.Literal, 'stuff']]]
+      [Nodes.Aggregate, [Nodes.Output, [Nodes.Literal, 'stuff']]]
     ]
   ]);
   // and with closing name
@@ -17,7 +17,7 @@ test('should parse block tags', t => {
     [
       Nodes.Block,
       [Nodes.Symbol, 'foo'],
-      [Nodes.List, [Nodes.Output, [Nodes.Literal, 'stuff']]]
+      [Nodes.Aggregate, [Nodes.Output, [Nodes.Literal, 'stuff']]]
     ]
   ]);
 });

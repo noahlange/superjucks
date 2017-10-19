@@ -8,11 +8,11 @@ test('should parse if blocks', t => {
     [
       Nodes.If,
       [Nodes.Symbol, 'foo'],
-      [Nodes.List, [Nodes.Output, [Nodes.Symbol, 'foo']]],
+      [Nodes.Aggregate, [Nodes.Output, [Nodes.Symbol, 'foo']]],
       [
         Nodes.If,
         [Nodes.Symbol, 'bar'],
-        [Nodes.List, [Nodes.Output, [Nodes.Symbol, 'bar']]],
+        [Nodes.Aggregate, [Nodes.Output, [Nodes.Symbol, 'bar']]],
         null
       ]
     ]
@@ -23,12 +23,12 @@ test('should parse if blocks', t => {
     [
       Nodes.If,
       [Nodes.Symbol, 'foo'],
-      [Nodes.List, [Nodes.Output, [Nodes.Symbol, 'foo']]],
+      [Nodes.Aggregate, [Nodes.Output, [Nodes.Symbol, 'foo']]],
       [
         Nodes.If,
         [Nodes.Symbol, 'bar'],
-        [Nodes.List, [Nodes.Output, [Nodes.Symbol, 'bar']]],
-        [Nodes.List, [Nodes.Output, [Nodes.Literal, 'nada']]]
+        [Nodes.Aggregate, [Nodes.Output, [Nodes.Symbol, 'bar']]],
+        [Nodes.Aggregate, [Nodes.Output, [Nodes.Literal, 'nada']]]
       ]
     ]
   ]);

@@ -11,11 +11,8 @@ export default class AggregateNode extends Node {
   }
 
   public compile(compiler: Compiler, frame: Frame): void {
-    for (let i = 0; i < this.children.length; i++) {
-      if (i > 0) {
-        compiler.emit(', ', false);
-      }
-      this.children[i].compile(compiler, frame);
+    for (const child of this.children) {
+      child.compile(compiler, frame);
     }
   }
 

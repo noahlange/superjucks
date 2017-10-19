@@ -33,13 +33,13 @@ test('compiler should emit code with manual indents and things', t => {
 test('compiler should emit writes', t => {
   const c = new Compiler();
   c.emitWrite(() => c.emit('\'THIS IS SO GREAT\'', false));
-  t.is(c.buffer.join(''), 'this.buf.write(\'THIS IS SO GREAT\');\n');
+  t.is(c.buffer.join(''), 'buffer.write(\'THIS IS SO GREAT\');\n');
 });
 
 test('compiler should emit escapes', t => {
   const c = new Compiler();
   c.emitEscape(() => c.emit('\'THIS IS SO GREAT\'', false));
-  t.is(c.buffer.join(''), 'this.buf.esc(\'THIS IS SO GREAT\');\n');
+  t.is(c.buffer.join(''), 'buffer.esc(\'THIS IS SO GREAT\');\n');
 });
 
 test('compiler#compile() should invoke compile methods of objects', async t => {

@@ -20,14 +20,14 @@ test('should parse switch blocks', t => {
         [
           Nodes.Case,
           [Nodes.Literal, 'bar'],
-          [Nodes.List, [Nodes.Output, [Nodes.Literal, ' BAR']]]
+          [Nodes.Aggregate, [Nodes.Output, [Nodes.Literal, ' BAR']]]
         ],
         [
           Nodes.Case,
           [Nodes.Literal, 'baz'],
-          [Nodes.List, [Nodes.Output, [Nodes.Literal, ' BAZ']]]
+          [Nodes.Aggregate, [Nodes.Output, [Nodes.Literal, ' BAZ']]]
         ],
-        [Nodes.List, [Nodes.Output, [Nodes.Literal, ' NEITHER FOO NOR BAR']]]
+        [Nodes.Aggregate, [Nodes.Output, [Nodes.Literal, ' NEITHER FOO NOR BAR']]]
       ]
     ]
   );
@@ -47,12 +47,12 @@ test('should parse switch blocks without default cases', t => {
         [
           Nodes.Case,
           [Nodes.Literal, 'bar'],
-          [Nodes.List, [Nodes.Output, [Nodes.Literal, ' BAR']]]
+          [Nodes.Aggregate, [Nodes.Output, [Nodes.Literal, ' BAR']]]
         ],
         [
           Nodes.Case,
           [Nodes.Literal, 'baz'],
-          [Nodes.List, [Nodes.Output, [Nodes.Literal, ' BAZ']]]
+          [Nodes.Aggregate, [Nodes.Output, [Nodes.Literal, ' BAZ']]]
         ],
         null
       ]
