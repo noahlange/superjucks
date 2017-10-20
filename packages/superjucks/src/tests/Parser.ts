@@ -34,7 +34,7 @@ test('should parse literal types', t => {
     Nodes.Root,
     [Nodes.Output, [Nodes.Symbol, 'foo']]
   ]);
-  t.deepEqual(p('{{ r/23/gi }}'), [
+  t.deepEqual(p('{{ /23/gi }}'), [
     Nodes.Root,
     [Nodes.Output, [Nodes.Literal, /23/gi]]
   ]);

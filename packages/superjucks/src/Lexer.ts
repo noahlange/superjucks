@@ -78,6 +78,9 @@ export default class Lexer {
   public line: number = 1;
   public col: number = 1;
 
+  public tline: number;
+  public tcol: number;
+
   private inCode: boolean = false;
   private len: number;
   private trimBlocks: boolean;
@@ -119,6 +122,171 @@ export default class Lexer {
     return !this.isFinished() ? this.str.charAt(this.index) : '';
   }
 
+  /**
+   * Determine whether the current token is a RegExp. Should be overridden in
+   * the Nunjucks lexer to preserve expected behavior for r-prefixed RegExps.
+   */
+  public testRegExp(): boolean {
+    let regexIdx = this.index - 1;
+    let isRegExp = false;
+    let whitespace = true;
+    // go backwards until we hit a non-whitespace token
+    while (whitespace && regexIdx > 0) {
+      const previous = this.str.charAt(regexIdx);
+      if (/\s/.test(previous)) {
+        regexIdx -= 1;
+      } else {
+        whitespace = false;
+        // the following characters are acceptable previous tokens for a RegExp
+        // but not for a division operator, which is the same operator ('/')
+        if ('(,=:[!&|?{};'.includes(previous)) {
+          isRegExp = true;
+        }
+      }
+    }
+    return isRegExp;
+  }
+
+  /**
+   * Parse a RegExp token.
+   */
+  public parseRegExp(): IToken {
+    const col = this.tcol;
+    const line = this.tline;
+    this.forward();
+    let regexBody = '';
+    while (!this.isFinished()) {
+      if (this.current() === '/' && this.previous() !== '\\') {
+        this.forward();
+        break;
+      } else {
+        regexBody = regexBody + this.current();
+        this.forward();
+      }
+    }
+    // Check for flags.
+    // The possible flags are according to
+    // https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/RegExp)
+    let flags = '';
+    while (!this.isFinished()) {
+      const isCurrentAFlag = REGEX_FLAGS.indexOf(this.current()) !== -1;
+      if (isCurrentAFlag) {
+        flags = flags + this.current();
+        this.forward();
+      } else {
+        break;
+      }
+    }
+    return {
+      col,
+      line,
+      type: Token.REGEX,
+      value: { body: regexBody, flags }
+    };
+  }
+
+  public parseDelimeter() {
+    let curr = this.str[this.index];
+    const line = this.tline;
+    const col = this.tcol;
+    // We've hit a delimiter (a special char like a bracket)
+    this.forward();
+    const complexOps = [
+      '==',
+      '===',
+      '!=',
+      '!==',
+      '<=',
+      '>=',
+      '//',
+      '**',
+      '??',
+      '?:',
+      '..',
+      '...'
+    ];
+    const curComplex = curr + this.current();
+    let type;
+    if (complexOps.indexOf(curComplex) !== -1) {
+      this.forward();
+      curr = curComplex;
+      // See if this is a strict equality / inequality comparator
+      if (complexOps.indexOf(curComplex + this.current()) !== -1) {
+        curr = curComplex + this.current();
+        this.forward();
+      }
+    }
+    switch (curr) {
+      case '(':
+        type = Token.LEFT_PAREN;
+        break;
+      case ')':
+        type = Token.RIGHT_PAREN;
+        break;
+      case '[':
+        type = Token.LEFT_BRACKET;
+        break;
+      case ']':
+        type = Token.RIGHT_BRACKET;
+        break;
+      case '{':
+        type = Token.LEFT_CURLY;
+        break;
+      case '}':
+        type = Token.RIGHT_CURLY;
+        break;
+      case ',':
+        type = Token.COMMA;
+        break;
+      case ':':
+        type = Token.COLON;
+        break;
+      case '~':
+        type = Token.TILDE;
+        break;
+      case '|':
+        type = Token.PIPE;
+        break;
+      default:
+        type = Token.OPERATOR;
+        break;
+    }
+    return { type, value: curr, line, col };
+  }
+
+  public parseLiteral(tok: string) {
+    const line = this.tline;
+    const col = this.tcol;
+    // We are not at whitespace or a delimiter, so extract the text and parse it
+    if (tok.match(/^[-+]?[0-9]+$/)) {
+      if (this.current() === '.') {
+        this.forward();
+        if (this.current() === '.') {
+          this.back();
+          return { type: Token.INT, value: tok, line, col };
+        } else {
+          const dec = this._extract(INT_CHARS);
+          return {
+            col,
+            line,
+            type: Token.FLOAT,
+            value: `${tok}.${dec}`
+          };
+        }
+      } else {
+        return { type: Token.INT, value: tok, line, col };
+      }
+    } else if (tok.match(/^(true|false)$/)) {
+      return { type: Token.BOOLEAN, value: tok, line, col };
+    } else if (this.nullTokens.indexOf(tok) > -1) {
+      return { type: Token.NULL, value: tok, line, col };
+    } else if (tok) {
+      return { type: Token.SYMBOL, value: tok, line, col };
+    } else {
+      throw new Error('Unexpected value while lexing: ' + tok);
+    }
+  }
+
   public parseString(delimiter: string): string {
     this.forward();
     let str = '';
@@ -157,6 +325,10 @@ export default class Lexer {
   public nextToken(): IToken | null {
     const line = this.line;
     const col = this.col;
+    // we need to store the current token's line and col so we can report the
+    // correct line/col, even if we continue to shuffle around.
+    this.tline = line;
+    this.tcol = col;
     let tok;
     if (this.inCode) {
       let curr = this.current();
@@ -200,131 +372,19 @@ export default class Lexer {
             this._extractString('-' + this.tags.VARIABLE_END);
           this.inCode = false;
           return { type: Token.VARIABLE_END, value: tok, line, col };
-        } else if (curr === 'r' && this.str.charAt(this.index + 1) === '/') {
-          this.forwardN(2);
-          let regexBody = '';
-          while (!this.isFinished()) {
-            if (this.current() === '/' && this.previous() !== '\\') {
-              this.forward();
-              break;
-            } else {
-              regexBody = regexBody + this.current();
-              this.forward();
-            }
-          }
-          // Check for flags.
-          // The possible flags are according to
-          // https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/RegExp)
-          let flags = '';
-          while (!this.isFinished()) {
-            const isCurrentAFlag = REGEX_FLAGS.indexOf(this.current()) !== -1;
-            if (isCurrentAFlag) {
-              flags = flags + this.current();
-              this.forward();
-            } else {
-              break;
-            }
-          }
-          return {
-            col,
-            line,
-            type: Token.REGEX,
-            value: { body: regexBody, flags }
-          };
-        } else if (DELIM_CHARS.indexOf(curr) !== -1) {
-          // We've hit a delimiter (a special char like a bracket)
-          this.forward();
-          const complexOps = [
-            '==',
-            '===',
-            '!=',
-            '!==',
-            '<=',
-            '>=',
-            '//',
-            '**',
-            '??',
-            '?:',
-            '..',
-            '...'
-          ];
-          const curComplex = curr + this.current();
-          let type;
-          if (complexOps.indexOf(curComplex) !== -1) {
-            this.forward();
-            curr = curComplex;
-            // See if this is a strict equality / inequality comparator
-            if (complexOps.indexOf(curComplex + this.current()) !== -1) {
-              curr = curComplex + this.current();
-              this.forward();
-            }
-          }
-          switch (curr) {
-            case '(':
-              type = Token.LEFT_PAREN;
-              break;
-            case ')':
-              type = Token.RIGHT_PAREN;
-              break;
-            case '[':
-              type = Token.LEFT_BRACKET;
-              break;
-            case ']':
-              type = Token.RIGHT_BRACKET;
-              break;
-            case '{':
-              type = Token.LEFT_CURLY;
-              break;
-            case '}':
-              type = Token.RIGHT_CURLY;
-              break;
-            case ',':
-              type = Token.COMMA;
-              break;
-            case ':':
-              type = Token.COLON;
-              break;
-            case '~':
-              type = Token.TILDE;
-              break;
-            case '|':
-              type = Token.PIPE;
-              break;
-            default:
-              type = Token.OPERATOR;
-              break;
-          }
-          return { type, value: curr, line, col };
         } else {
-          // We are not at whitespace or a delimiter, so extract the text and parse it
-          tok = this._extractUntil(WHITESPACE_CHARS + DELIM_CHARS);
-          if (tok) {
-            if (tok.match(/^[-+]?[0-9]+$/)) {
-              if (this.current() === '.') {
-                this.forward();
-                if (this.current() === '.') {
-                  this.back();
-                  return { type: Token.INT, value: tok, line, col };
-                } else {
-                  const dec = this._extract(INT_CHARS);
-                  return {
-                    col,
-                    line,
-                    type: Token.FLOAT,
-                    value: `${tok}.${dec}`
-                  };
-                }
-              } else {
-                return { type: Token.INT, value: tok, line, col };
-              }
-            } else if (tok.match(/^(true|false)$/)) {
-              return { type: Token.BOOLEAN, value: tok, line, col };
-            } else if (this.nullTokens.indexOf(tok) > -1) {
-              return { type: Token.NULL, value: tok, line, col };
-            } else if (tok) {
-              return { type: Token.SYMBOL, value: tok, line, col };
-            } else {
-              throw new Error('Unexpected value while lexing: ' + tok);
+          // this might be the start of a regex.
+          if (curr === '/') {
+            if (this.testRegExp()) {
+              return this.parseRegExp();
+            }
+          }
+          if (DELIM_CHARS.indexOf(curr) !== -1) {
+            return this.parseDelimeter();
+          } else {
+            tok = this._extractUntil(WHITESPACE_CHARS + DELIM_CHARS);
+            if (tok) {
+              return this.parseLiteral(tok);
             }
           }
         }
