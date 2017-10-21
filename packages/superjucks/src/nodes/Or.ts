@@ -12,7 +12,9 @@ export default class OrNode extends Node {
     }
     return node;
   }
-  public compile() {
-    return;
+  public compile(compiler: Compiler, frame: Frame) {
+    compiler.compile(this.left, frame);
+    compiler.emit(' || ', false);
+    compiler.compile(this.right, frame);
   }
 }

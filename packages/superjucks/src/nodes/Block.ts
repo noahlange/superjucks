@@ -8,20 +8,20 @@ import ListNode from './List';
 import SymbolNode from './Symbol';
 
 export default class BlockNode extends Node {
-
   public static parse(parser: Parser) {
     const start = parser.config.syntax.tags.BLOCK;
-    const end = `${ parser.config.syntax.keywords.END }${ start }`;
+    const end = `${parser.config.syntax.keywords.END}${start}`;
 
     const tag = parser.peekToken();
-    if (!parser.skipValue(Token.SYMBOL, start)) {
-      throw new Error(`parseBlock: expected "${ start }" (${ tag.line }, ${ tag.col })`);
-    }
+    parser.skipValue(Token.SYMBOL, start);
 
-    const node = new BlockNode(tag.line, tag.col, { name: parser.parsePrimary(), body: null });
+    const name = parser.parsePrimary();
+    const node = new BlockNode(tag.line, tag.col, { name, body: null });
 
     if (!(node.name instanceof SymbolNode)) {
-      throw new Error(`parseBlock: variable name expected (${ tag.line }, ${ tag.col })`);
+      throw new Error(
+        `parseBlock: expected symbol, found "${ name.value }" (${tag.line}, ${tag.col})`
+      );
     }
 
     parser.advanceAfterBlockEnd(tag.value);
@@ -31,7 +31,7 @@ export default class BlockNode extends Node {
 
     const tok = parser.peekToken();
     if (!tok) {
-      throw new Error(`parseBlock: expected "${ end }", got end of file`);
+      throw new Error(`parseBlock: expected "${end}", got end of file`);
     }
 
     parser.advanceAfterBlockEnd(tok.value);

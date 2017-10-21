@@ -2,8 +2,10 @@
   "name": "superjucks",
   "description": "Nunjucks-inspired templating language from the future!",
   "version": "0.2.0",
+  "devDependencies": {
+    "@types/lodash": "^4.14.77"
+  },
   "dependencies": {
-    "@types/lodash": "^4.14.77",
     "lodash": "^4.17.4",
     "superjucks-runtime": "0.2.0"
   },

@@ -12,9 +12,13 @@ export default class PowNode extends Node {
     }
     return node;
   }
-  public left: any;
-  public right: any;
-  public compile() {
-    return;
+  public left: Node;
+  public right: Node;
+  public compile(compiler: Compiler, frame: Frame): void {
+    compiler.emit('Math.pow(', false);
+    compiler.compile(this.left, frame);
+    compiler.emit(', ', false);
+    compiler.compile(this.right, frame);
+    compiler.emit(')', false);
   }
 }

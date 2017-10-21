@@ -8,9 +8,7 @@ export default class OutputNode extends Node {
   public compile(compiler: Compiler, frame: Frame) {
     for (const child of this.children) {
       if (child instanceof Literal) {
-        if (child.value) {
-          compiler.emitWrite(() => child.compile(compiler, frame));
-        }
+        compiler.emitWrite(() => child.compile(compiler, frame));
       } else {
         compiler.emitEscape(() => child.compile(compiler, frame));
       }

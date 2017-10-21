@@ -9,10 +9,7 @@ import ListNode from './List';
 export default class MacroNode extends Node {
   public static parse(parser: Parser) {
     const macroTok = parser.peekToken();
-    if (!parser.skipValue(Token.SYMBOL, 'macro')) {
-      throw new Error('Expected macro');
-    }
-
+    parser.skipValue(Token.SYMBOL, 'macro');
     const name = parser.parsePrimary(true);
     const args = parser.parseSignature();
     const node = new MacroNode(macroTok.line, macroTok.col, { name, args, body: null });

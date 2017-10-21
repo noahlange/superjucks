@@ -17,6 +17,15 @@ test('should throw when operator not included in config', async t => {
   );
 });
 
+test('should not throw when filter does not exist but parser is loosey-goosey', async t => {
+  const config = new Config();
+  config.operators.push(Nodes.Filter);
+  t.notThrows(
+    () => parse('{{ foo | bar }}', config, { strict: false }),
+    'Unknown filter "bar" at 1, 8.'
+  );
+});
+
 test('should throw when filter does not exist', async t => {
   const config = new Config();
   config.operators.push(Nodes.Filter);

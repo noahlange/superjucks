@@ -199,47 +199,6 @@ test('should parse "await" operator', t => {
   ]);
 });
 
-test('should parse is operator', t => {
-  t.deepEqual(p('{{ x is callable }}'), [
-    Nodes.Root,
-    [Nodes.Output, [Nodes.Is, [Nodes.Symbol, 'x'], [Nodes.Symbol, 'callable']]]
-  ]);
-
-  t.deepEqual(p('{{ x is not callable(foo) }}'), [
-    Nodes.Root,
-    [
-      Nodes.Output,
-      [
-        Nodes.Not,
-        [
-          Nodes.Is,
-          [Nodes.Symbol, 'x'],
-          [
-            Nodes.FunctionCall,
-            [Nodes.Symbol, 'callable'],
-            [Nodes.List, [Nodes.Symbol, 'foo']]
-          ]
-        ]
-      ]
-    ]
-  ]);
-
-  t.deepEqual(p('{{ x is not callable or y is callable }}'), [
-    Nodes.Root,
-    [
-      Nodes.Output,
-      [
-        Nodes.Or,
-        [
-          Nodes.Not,
-          [Nodes.Is, [Nodes.Symbol, 'x'], [Nodes.Symbol, 'callable']]
-        ],
-        [Nodes.Is, [Nodes.Symbol, 'y'], [Nodes.Symbol, 'callable']]
-      ]
-    ]
-  ]);
-});
-
 test('should throw on unterminated comments', t => {
   t.throws(() => p('{# foo'));
 });

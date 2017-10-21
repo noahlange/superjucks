@@ -18,6 +18,8 @@ export default class SubNode extends Node {
   public right: Node;
 
   public compile(compiler: Compiler, frame: Frame): void {
-    return;
+    compiler.compile(this.left, frame);
+    compiler.emit(' - ', false);
+    compiler.compile(this.right, frame);
   }
 }
