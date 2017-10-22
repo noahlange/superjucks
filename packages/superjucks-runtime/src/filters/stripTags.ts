@@ -2,7 +2,6 @@ import { copySafeness } from '../runtime';
 import trim from './trim';
 
 export default function striptags(input: string, preserveLinebreaks?: boolean) {
-  input = input || '';
   preserveLinebreaks = preserveLinebreaks || false;
   const tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>|<!--[\s\S]*?-->/gi;
   const trimmedInput = trim(input.replace(tags, ''));

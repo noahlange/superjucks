@@ -32,7 +32,10 @@ test('ceil should provide the ceil of an number', async t => {
 test('center should center a string in another string', async t => {
   t.is(filters.center('ZARGOTHRAX', 4), 'ZARG');
   t.is(filters.center('ZARGOTHRAX', 32), '           ZARGOTHRAX           ');
-  t.is(filters.center(), '                                                                                ');
+  t.is(
+    filters.center(),
+    '                                                                                '
+  );
 });
 
 test('chunk should chunk an array into n-lengthed arrays', async t => {
@@ -42,7 +45,7 @@ test('chunk should chunk an array into n-lengthed arrays', async t => {
     .join('\n');
 
   const chunked2 = filters
-    .chunk([ 1, 2, 3, 4 ], 2)
+    .chunk([1, 2, 3, 4], 2)
     .map(a => a.join(''))
     .join('\n');
 
@@ -62,6 +65,7 @@ test('date should format a date object into a human-readable string', async t =>
 });
 
 test('default should provide a default value for a lookup', async t => {
+  t.is(filters.default('hulk', 'smash'), 'hulk');
   t.is(filters.default(undefined, 'smash'), 'smash');
 });
 
@@ -159,11 +163,11 @@ test('group by should group an object by an attribute', t => {
 });
 
 test('join should join an array on a delimeter', async t => {
-  t.is(filters.join([1, 2, 3, 4, 5], ''), '12345');
+  t.is(filters.join([1, 2, 3, 4, 5]), '12345');
 });
 
 test('join should join an array of objects on a delimeter via a key', async t => {
-  t.is(filters.join([{ foo: 'bar' }, { foo: 'baz' }], '', 'foo'), 'barbaz');
+  t.is(filters.join([{ foo: 'bar' }, { foo: 'baz' }], '|', 'foo'), 'bar|baz');
 });
 
 test('last should return the last item in an iterable', async t => {
@@ -198,6 +202,17 @@ test('map should map an array on a key', async t => {
 
 test('minus should subtract one value from another', async t => {
   t.is(filters.minus(5.0, 2), 3.0);
+});
+
+test('dividedBy should divide one value by another', async t => {
+  t.is(filters.dividedBy('5.0', 2), 2.5);
+  t.is(filters.dividedBy(5, '2'), 2.5);
+  t.is(filters.dividedBy('5', 2.0), 2.5);
+  t.is(filters.dividedBy(5.0, '2.0'), 2.5);
+});
+
+test('times should multiply one value by another', async t => {
+  t.is(filters.times(5.0, 2), 10.0);
 });
 
 test('modulo should find the remainder of a division operation', async t => {
@@ -247,6 +262,7 @@ test('remove should remove all instances of one string from another', async t =>
 
 test('round should round a number', async t => {
   t.is(filters.round(4.5), 5);
+  t.is(filters.round('4.5'), 5);
 });
 
 test('removeFirst should remove the first instance of one string from another', async t => {
@@ -282,7 +298,7 @@ test('sum should sum the properties of an object by key', t => {
     '123'
   );
 
-  t.is(filters.sum([ 1, 2, 3, 4, 5 ]), 15);
+  t.is(filters.sum([1, 2, 3, 4, 5]), 15);
 });
 
 test('toCase should change the case of a string', async t => {
@@ -309,20 +325,39 @@ test('truncate words should truncate x words of arbitrary length to n words', as
     filters.truncateWords('The cat came back the very next day', 4, '...'),
     'The cat came back...'
   );
-  t.is(
-    filters.truncateWords('Oh hi, Mark!', 4), 'Oh hi, Mark!'
-  );
+  t.is(filters.truncateWords('Oh hi, Mark!', 4), 'Oh hi, Mark!');
 });
 
-test('stirp tags should stripe the tags from an html string', t => {
+test('strip tags should stripe the tags from an html string', t => {
   const str = `<span>I'm back in the saddle again!</span>`;
   t.is(filters.stripTags(str, false), `I'm back in the saddle again!`);
 });
 
+test('strip tags should stripe the tags from an html string, leaving line breaks intact', t => {
+  const str = '<span>I\'m back in the\nsaddle again!</span>';
+  t.is(filters.stripTags(str, true), `I'm back in the\nsaddle again!`);
+});
+
 test('urlize is not my code and does magical things', t => {
+  t.is(
+    filters.urlize('foo http://www.example.com bar', Infinity, true),
+    `foo <a href="http://www.example.com" rel="nofollow">http://www.example.com</a> bar`
+  );
   t.is(
     filters.urlize('foo http://www.example.com/ bar'),
     `foo <a href="http://www.example.com/">http://www.example.com/</a> bar`
+  );
+  t.is(
+    filters.urlize('foo www.example.com bar'),
+    `foo <a href="https://www.example.com">www.example.com</a> bar`
+  );
+  t.is(
+    filters.urlize('foo example.com bar'),
+    `foo <a href="https://example.com">example.com</a> bar`
+  );
+  t.is(
+    filters.urlize('foo@example.com'),
+    `<a href="mailto:foo@example.com">foo@example.com</a>`
   );
 });
 
@@ -360,7 +395,7 @@ test('upper should uppercase a string', t => {
 
 test('reverse should reverse a string or array', t => {
   t.is(filters.reverse('foobar'), 'raboof');
-  t.deepEqual(filters.reverse([ 1, 2, 3, 4, 5 ]), [ 5, 4, 3, 2, 1 ]);
+  t.deepEqual(filters.reverse([1, 2, 3, 4, 5]), [5, 4, 3, 2, 1]);
 });
 
 test('string should stringify a value', t => {
@@ -369,7 +404,7 @@ test('string should stringify a value', t => {
 });
 
 test('unique should filter out repeated items from an array', t => {
-  t.deepEqual(filters.unique([ 1, 2, 3, 3, 2, 1 ]), [ 1, 2, 3 ]);
+  t.deepEqual(filters.unique([1, 2, 3, 3, 2, 1]), [1, 2, 3]);
 });
 
 test('trim newlines should trim a string of line breaks', t => {
@@ -379,10 +414,25 @@ test('trim newlines should trim a string of line breaks', t => {
 
 test('replace should replace a substring of a string', t => {
   t.is(filters.replace('thisisastringisa', 'isa'), 'thisstring');
-  t.is(filters.replace('thisisastringisa', 'isa', 'wasa'), 'thiswasastringwasa');
+  t.is(
+    filters.replace('thisisastringisa', 'isa', 'wasa'),
+    'thiswasastringwasa'
+  );
 });
 
 test('replaceFirst should replace the first instance of a substring of a string', t => {
   t.is(filters.replaceFirst('thisisastringisa', 'isa'), 'thisstringisa');
-  t.is(filters.replaceFirst('thisisastringisa', 'isa', 'wasa'), 'thiswasastringisa');
+  t.is(
+    filters.replaceFirst('thisisastringisa', 'isa', 'wasa'),
+    'thiswasastringisa'
+  );
+});
+
+test('split should split a string into an array', t => {
+  t.deepEqual(filters.split('foobar'), ['f', 'o', 'o', 'b', 'a', 'r']);
+});
+
+test('urlEncode / UrlDecode should do what they say on the tin', t => {
+  t.is(filters.urlDecode('foo%20bar'), 'foo bar');
+  t.is(filters.urlEncode('foo bar'), 'foo%20bar');
 });

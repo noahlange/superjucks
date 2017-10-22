@@ -1,8 +1,4 @@
-export default function urlize(str: string, length?: number, noFollow?: boolean) {
-  if (isNaN(length)) {
-    length = Infinity;
-  }
-
+export default function urlize(str: string, length: number = Infinity, noFollow?: boolean) {
   const noFollowAttr = (noFollow === true ? ' rel="nofollow"' : '');
 
   // For the jinja regexp, see
@@ -27,7 +23,7 @@ export default function urlize(str: string, length?: number, noFollow?: boolean)
 
       // url that starts with www.
       if (wwwRE.test(possibleUrl)) {
-        return '<a href="http://' + possibleUrl + '"' + noFollowAttr + '>' + possibleUrl.substr(0, length) + '</a>';
+        return '<a href="https://' + possibleUrl + '"' + noFollowAttr + '>' + possibleUrl.substr(0, length) + '</a>';
       }
 
       // an email address of the form username@domain.tld
@@ -37,7 +33,7 @@ export default function urlize(str: string, length?: number, noFollow?: boolean)
 
       // url that ends in .com, .org or .net that is not an email address
       if (tldRE.test(possibleUrl)) {
-        return '<a href="http://' + possibleUrl + '"' + noFollowAttr + '>' + possibleUrl.substr(0, length) + '</a>';
+        return '<a href="https://' + possibleUrl + '"' + noFollowAttr + '>' + possibleUrl.substr(0, length) + '</a>';
       }
 
       return word;

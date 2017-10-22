@@ -1,6 +1,4 @@
 export default function round(n: number | string) {
-  if (typeof n === 'string') {
-    n = parseFloat(n);
-  }
+  n = typeof n === 'string' ? parseFloat(n) : n;
   return Math.round(n);
 }

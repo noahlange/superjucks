@@ -9,6 +9,7 @@ import compact from './compact';
 import date from './date';
 import defaults from './default';
 import dictSort from './dictSort';
+import dividedBy from './dividedBy';
 import dump from './dump';
 import escape from './escape';
 import first from './first';
@@ -73,6 +74,7 @@ export {
   defaults as default,
   defaults as d,
   dictSort,
+  dividedBy,
   dump,
   escape,
   escape as e,
