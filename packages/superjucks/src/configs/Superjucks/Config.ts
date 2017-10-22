@@ -93,7 +93,7 @@ export default class Superjucks extends Config {
     Set: Nodes.Set,
     // Raw: Nodes.Raw,
     Switch: Nodes.Switch,
-    // Unless: Nodes.Unless
+    Unless: Nodes.Unless
   };
   public operators = [
     Nodes.Filter,

@@ -48,6 +48,7 @@ import Import from './Import';
 import Macro from './Macro';
 import Set from './Set';
 import Switch from './Switch';
+import Unless from './Unless';
 
 export {
   Add,
@@ -92,5 +93,6 @@ export {
   Sub,
   Switch,
   Symbol,
-  Ternary
+  Ternary,
+  Unless
 };

@@ -11,17 +11,29 @@ export default class IfNode extends Node {
     const tags = {
       else: parser.config.syntax.tags.ELSE,
       elseif: parser.config.syntax.tags.ELSEIF,
-      endif: joinKeywords(parser.config.syntax.keywords.END, parser.config.syntax.tags.IF),
+      endif: joinKeywords(
+        parser.config.syntax.keywords.END,
+        parser.config.syntax.tags.IF
+      ),
       if: parser.config.syntax.tags.IF
     };
 
     const tag = parser.peekToken();
     let node;
 
-    if (parser.skipValue(Token.SYMBOL, tags.if) || parser.skipValue(Token.SYMBOL, tags.elseif)) {
-      node = new IfNode(tag.line, tag.col, { cond: null, body: null, else: null });
+    if (
+      parser.skipValue(Token.SYMBOL, tags.if) ||
+      parser.skipValue(Token.SYMBOL, tags.elseif)
+    ) {
+      node = new IfNode(tag.line, tag.col, {
+        body: null,
+        cond: null,
+        else: null
+      });
     } else {
-      throw new Error(`parseIf: expected ${ tags.if }, ${ tags.elseif } (${ tag.line }, ${ tag.col })`);
+      throw new Error(
+        `parseIf: expected ${tags.if}, ${tags.elseif} (${tag.line}, ${tag.col})`
+      );
     }
 
     node.cond = parser.parseExpression();
@@ -38,7 +50,6 @@ export default class IfNode extends Node {
       if (parser.matches(ifTok.value, tags.if)) {
         node.else = this.parse(parser);
       } else {
-        // parser.pushToken(elseTok);
         parser.advanceAfterBlockEnd('else');
         node.else = parser.parseUntilBlocks('endif');
         parser.advanceAfterBlockEnd();
@@ -47,13 +58,25 @@ export default class IfNode extends Node {
       node.else = undefined;
       parser.advanceAfterBlockEnd();
     } else {
-      throw new Error(`parseIf: expected if, elif or elseif, got end of file (${ tag.line }, ${ tag.col })`);
+      throw new Error(
+        `parseIf: expected if, elif, else if or else if, got end of file (${tag.line}, ${tag.col})`
+      );
     }
 
     return node;
   }
 
-  public compile() {
-    return;
+  public fields = ['cond', 'body', 'else'];
+
+  public compile(compiler: Compiler, frame: Frame) {
+    compiler.emit('if (');
+    compiler.compile(this.cond, frame);
+    compiler.emit(') {\n', false);
+    compiler.indent(() => this.body.compile(compiler, frame));
+    if (this.else) {
+      compiler.emitLine(`} else {`);
+      compiler.indent(() => this.else.compile(compiler, frame));
+    }
+    compiler.emitLine('}');
   }
 }

@@ -14,6 +14,10 @@ export default class FloorDivNode extends Node {
   }
 
   public compile(compiler: Compiler, frame: Frame): void {
-    return;
+    compiler.emit('Math.floor(');
+    compiler.compile(this.left, frame);
+    compiler.emit(' / ', false);
+    compiler.compile(this.right, frame);
+    compiler.emit(')');
   }
 }
