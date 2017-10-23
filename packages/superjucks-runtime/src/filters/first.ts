@@ -1,5 +1,5 @@
-export default function first(arr: Iterable<any>) {
-  for (const item of arr) {
+export default function first(iterable: Iterable<any>) {
+  for (const item of iterable) {
     return item;
   }
 }

@@ -1,5 +1,6 @@
 import test, { TestContext } from 'ava';
 import * as filters from '../filters/index';
+import safe from '../filters/safe';
 
 test('abs should return the absolute value of a number', t => {
   t.is(filters.abs(-3.5), 3.5);
@@ -80,7 +81,7 @@ test('dictSort should allow the user to sort a dictionary', async t => {
 });
 
 test('dictSort should puke on scalars', t => {
-  t.throws(() => filters.dictSort('123'));
+  t.throws(() => filters.dictSort('123' as any));
 });
 
 test('should require sorts to be by key or value', t => {
@@ -119,7 +120,7 @@ test('should require sorts to be by key or value', t => {
     filters.dictSort(
       [{ one: { foo: 'baz' }, two: { foo: 'bar' } }],
       true,
-      'purple'
+      'purple' as any
     )
   );
 });
@@ -134,6 +135,7 @@ test('first should select the first item in an iterable', async t => {
 
 test('int should coerce a value to an int', async t => {
   t.is(filters.int('234.0'), 234);
+  t.is(filters.int('NaN', 'foo'), 'foo');
 });
 
 test('float should coerce a value to an float', async t => {
@@ -200,31 +202,8 @@ test('map should map an array on a key', async t => {
   );
 });
 
-test('minus should subtract one value from another', async t => {
-  t.is(filters.minus(5.0, 2), 3.0);
-});
-
-test('dividedBy should divide one value by another', async t => {
-  t.is(filters.dividedBy('5.0', 2), 2.5);
-  t.is(filters.dividedBy(5, '2'), 2.5);
-  t.is(filters.dividedBy('5', 2.0), 2.5);
-  t.is(filters.dividedBy(5.0, '2.0'), 2.5);
-});
-
-test('times should multiply one value by another', async t => {
-  t.is(filters.times(5.0, 2), 10.0);
-});
-
-test('modulo should find the remainder of a division operation', async t => {
-  t.is(filters.modulo(5, 2), 1);
-});
-
 test('newlineToBr should replace newlines with <br /> tags', async t => {
   t.is(filters.newlineToBr('\n'), '<br />\n');
-});
-
-test('minus should add one value to another', async t => {
-  t.is(filters.plus(5.0, 2), 7.0);
 });
 
 test('prepend should return prepend one string to another', async t => {
@@ -238,6 +217,7 @@ test('random should provide a random element from an array', async t => {
 
 test('reject should filter out array items with truthy values', async t => {
   t.is(filters.reject([{ tasty: false }, { tasty: true }], 'tasty').length, 1);
+  t.is(filters.reject([ false, true ]).length, 1);
 });
 
 test('reject should filter out keys with truthy values', async t => {
@@ -274,6 +254,7 @@ test('removeFirst should remove the first instance of one string from another', 
 
 test('select should filter out array items with falsy values', async t => {
   t.is(filters.select([{ tasty: false }, { tasty: true }], 'tasty').length, 1);
+  t.is(filters.select([0, 1]).length, 1);
 });
 
 test('select should filter out keys with falsy values', async t => {
@@ -290,6 +271,22 @@ test('select should filter out keys of items with falsy values', async t => {
     ).length,
     2
   );
+});
+
+test('slice should slice a string', t => {
+  t.is(filters.slice('123'), '123');
+});
+
+test('slice should slice a iterable', t => {
+  t.deepEqual(filters.slice([ 1, 2, 3 ], 0, 1), [ 1 ]);
+});
+
+test('shuffle should shuffle an array', t => {
+  const one = '123';
+  const two = [ 1, 2, 3 ];
+  t.is(filters.shuffle(one).length, 3);
+  t.is(filters.shuffle(two).length, 3);
+  t.true(filters.shuffle(two).every(item => two.includes(item)));
 });
 
 test('sum should sum the properties of an object by key', t => {
@@ -311,6 +308,7 @@ test('title should change the case of a string to title case', async t => {
 
 test('wordcount should return the wordcount of a string', async t => {
   t.is(filters.wordcount('foo bar'), 2);
+  t.is(filters.wordcount(''), null);
 });
 
 test('truncate should truncate a string', async t => {

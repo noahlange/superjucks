@@ -9,7 +9,6 @@ import compact from './compact';
 import date from './date';
 import defaults from './default';
 import dictSort from './dictSort';
-import dividedBy from './dividedBy';
 import dump from './dump';
 import escape from './escape';
 import first from './first';
@@ -23,10 +22,7 @@ import length from './length';
 import lower from './lower';
 import ltrim from './ltrim';
 import map from './map';
-import minus from './minus';
-import modulo from './modulo';
 import newlineToBr from './newlineToBr';
-import plus from './plus';
 import prepend from './prepend';
 import random from './random';
 import reject from './reject';
@@ -47,7 +43,6 @@ import split from './split';
 import string from './string';
 import stripTags from './stripTags';
 import sum from './sum';
-import times from './times';
 import title from './title';
 import toCase from './toCase';
 import trim from './trim';
@@ -74,7 +69,6 @@ export {
   defaults as default,
   defaults as d,
   dictSort,
-  dividedBy,
   dump,
   escape,
   escape as e,
@@ -90,11 +84,8 @@ export {
   lower,
   ltrim,
   map,
-  minus,
-  modulo,
   newlineToBr,
   newlineToBr as nl2br,
-  plus,
   prepend,
   random,
   reject,
@@ -116,7 +107,6 @@ export {
   string,
   stripTags,
   sum,
-  times,
   title,
   toCase,
   trim,

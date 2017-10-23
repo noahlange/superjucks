@@ -1,12 +1,16 @@
-export default function groupBy(obj: Iterable<any>, attr: string): object {
-  const res: any = {};
-  for (const value of obj) {
+type IOut<T extends object> = {
+  [K in T[keyof T]]: T[];
+};
+
+export default function groupBy<T extends object>(iterable: Iterable<T>, attr: keyof T) {
+  const out: IOut<T> = {} as IOut<T>;
+  for (const value of iterable) {
     const key = value[attr];
-    if (res[key]) {
-      res[key].push(value);
+    if (out[key]) {
+      out[key].push(value);
     } else {
-      res[key] = [ value ];
+      out[key] = [ value ];
     }
   }
-  return res;
+  return out;
 }

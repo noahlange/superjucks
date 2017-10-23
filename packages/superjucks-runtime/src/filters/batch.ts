@@ -1,6 +1,6 @@
 import { take } from 'lodash';
 
-export default function batch(arr: any[], slices: number, filler: any = null): any[][] {
+export default function batch<T>(arr: T[], slices: number, filler: any = null): T[][] {
   const res: any[] = [];
   const len = Math.ceil(arr.length / slices);
   const extras = arr.length % slices;

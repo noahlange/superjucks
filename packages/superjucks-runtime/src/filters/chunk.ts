@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 
-export default function chunk(array: any[], count: number, filler: any = '') {
+export default function chunk<T>(array: T[], count: number, filler: any = '') {
   const res = _.chunk(array, count);
   if (filler) {
     const pop = res.pop();

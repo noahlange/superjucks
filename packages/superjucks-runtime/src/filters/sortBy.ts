@@ -1,7 +1,7 @@
-export default function sortBy(arr: any[], prop: string) {
+export default function sortBy<T>(arr: T[], attr: keyof T): T[] {
   return arr.sort((a, b) => {
-    const astr = a[prop].toString();
-    const bstr = b[prop].toString();
+    const astr = a[attr].toString();
+    const bstr = b[attr].toString();
     return astr.localeCompare(bstr);
   });
 }
