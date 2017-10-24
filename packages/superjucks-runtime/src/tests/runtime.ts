@@ -27,5 +27,5 @@ test('copySafeness should copy safeness from one string to another', async t => 
   t.is(copySafeness(one, two), two);
   t.is(copySafeness(bone, btwo), btwo);
   t.is(copySafeness(one, btwo), two);
-  t.is(copySafeness(bone, two).__superjucks__escaped__, true);
+  t.is(copySafeness(bone, two).__superjucks_escaped__, true);
 });
