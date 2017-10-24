@@ -3,7 +3,8 @@ import Config from '../../Config';
 import Superjucks from '../../configs/Superjucks/Config';
 import * as Nodes from '../../nodes/index';
 import compile from '../helpers/compile';
-import { ast as p } from '../helpers/parse';
+import { parse as p } from '../helpers/parse';
+import run from '../helpers/run';
 
 test('should parse ternaries', t => {
   t.deepEqual(p('{{ x ?? "yes" }}'), [
@@ -23,4 +24,8 @@ test('should compile a ternary node', async t => {
     await compile(astOne),
     "(lookup('bar') === null || lookup('bar') === undefined) ? 'foo' : lookup('bar')"
   );
+});
+
+test('should evaluate a ternary node', async t => {
+  t.is(await run('{{ null ?? \'YELLO\' }}'), 'YELLO');
 });

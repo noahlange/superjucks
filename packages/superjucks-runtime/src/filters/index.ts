@@ -6,7 +6,6 @@ import ceil from './ceil';
 import center from './center';
 import chunk from './chunk';
 import compact from './compact';
-import date from './date';
 import defaults from './default';
 import dictSort from './dictSort';
 import dump from './dump';
@@ -44,7 +43,6 @@ import string from './string';
 import stripTags from './stripTags';
 import sum from './sum';
 import title from './title';
-import toCase from './toCase';
 import trim from './trim';
 import trimNewlines from './trimNewlines';
 import truncate from './truncate';
@@ -65,7 +63,6 @@ export {
   center,
   chunk,
   compact,
-  date,
   defaults as default,
   defaults as d,
   dictSort,
@@ -108,7 +105,6 @@ export {
   stripTags,
   sum,
   title,
-  toCase,
   trim,
   trimNewlines,
   truncate,

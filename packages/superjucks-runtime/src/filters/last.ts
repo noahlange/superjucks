@@ -1,3 +1,4 @@
 export default function last<T>(iterable: Iterable<T>): T {
-  return [ ...iterable ].pop();
+  const arr = [ ...iterable ];
+  return arr.pop();
 }

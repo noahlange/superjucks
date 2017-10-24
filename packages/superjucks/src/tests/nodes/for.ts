@@ -1,6 +1,6 @@
 import test from 'ava';
 import * as Nodes from '../../nodes/index';
-import { ast as p } from '../helpers/parse';
+import { parse as p } from '../helpers/parse';
 
 test('should parse for blocks', t => {
   t.deepEqual(p('{% for x of [1, 2] %}{{ x }}{% endfor %}'), [

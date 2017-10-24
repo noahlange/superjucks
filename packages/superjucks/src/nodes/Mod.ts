@@ -14,7 +14,9 @@ export default class ModNode extends Node {
   }
   public left: Node;
   public right: Node;
-  public compile() {
-    return;
+  public compile(compiler: Compiler, frame: Frame): void {
+    compiler.compile(this.left, frame);
+    compiler.emit(' % ', false);
+    compiler.compile(this.right, frame);
   }
 }

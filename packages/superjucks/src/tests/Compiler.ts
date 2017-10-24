@@ -77,7 +77,3 @@ test('compiler#getValueOf() should attempt to retrive the value of a node', asyn
   t.is(c.getValueOf(symbol), 'GNITSAC');
   t.is(c.getValueOf(fn), 'myFn');
 });
-
-test('compile should attempt to compile a string; currently a no-op', async t => {
-  t.is(await compile('{{ foo }}', new Superjucks()), '');
-});

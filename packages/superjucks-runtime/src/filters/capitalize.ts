@@ -1,5 +1,3 @@
-import { ucFirst } from 'change-case';
-
 export default function capitalize(str: string): string {
-  return ucFirst(str);
+  return str.charAt(0).toUpperCase() + str.slice(1);
 }

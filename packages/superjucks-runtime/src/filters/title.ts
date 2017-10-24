@@ -1,5 +1,5 @@
-import { title } from 'change-case';
-
 export default function titlecase(value: string) {
-  return title(value);
+  return value.replace(/\w\S*/g, txt => {
+    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+  });
 }

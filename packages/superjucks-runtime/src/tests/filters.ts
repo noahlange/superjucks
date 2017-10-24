@@ -50,6 +50,7 @@ test('chunk should chunk an array into n-lengthed arrays', async t => {
     .map(a => a.join(''))
     .join('\n');
 
+  t.throws(() => filters.chunk([], -2));
   t.is(chunked, '12\n34\n5foobar');
   t.is(chunked2, '12\n34');
 });
@@ -59,10 +60,6 @@ test('compact should remove duplicates from an array', async t => {
     .compact([1, null, 2, null, 3, null, 4, null, 5, null])
     .join('');
   t.deepEqual(compacted, '12345');
-});
-
-test('date should format a date object into a human-readable string', async t => {
-  t.is(filters.date(new Date(), 'YYYY-MM-D'), new Date().toLocaleDateString());
 });
 
 test('default should provide a default value for a lookup', async t => {
@@ -298,12 +295,8 @@ test('sum should sum the properties of an object by key', t => {
   t.is(filters.sum([1, 2, 3, 4, 5]), 15);
 });
 
-test('toCase should change the case of a string', async t => {
-  t.is(filters.toCase('FooBar', 'param'), 'foo-bar');
-});
-
 test('title should change the case of a string to title case', async t => {
-  t.is(filters.title('foo-bar'), 'Foo Bar');
+  t.is(filters.title('foo bar'), 'Foo Bar');
 });
 
 test('wordcount should return the wordcount of a string', async t => {

@@ -2,7 +2,7 @@ import test from 'ava';
 import { lex } from '../../Lexer';
 import * as Nodes from '../../nodes/index';
 import { parse } from '../../Parser';
-import { ast as p } from '../helpers/parse';
+import { parse as p } from '../helpers/parse';
 
 test('should throw on unnamed wildcards', t => {
   t.throws(() => p("{% import * from 'bar.sjk' %}"));

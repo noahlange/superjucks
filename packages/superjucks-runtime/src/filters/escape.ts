@@ -1,6 +1,6 @@
-import { escape } from 'lodash';
-import { brandSafeString } from '../runtime';
+import * as escape from 'escape-html';
+import { brandedSafeString, brandSafeString } from '../runtime';
 
 export default function(val: string): string {
-  return brandSafeString(escape(val));
+  return brandedSafeString(val) ? val : brandSafeString(escape(val));
 }

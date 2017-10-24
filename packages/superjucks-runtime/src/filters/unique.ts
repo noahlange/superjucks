@@ -1,5 +1,10 @@
-import { uniq } from 'lodash';
-
 export default function unique<T>(arr: T[]): T[] {
-  return uniq(arr);
+  const out = [];
+  do {
+    const item = arr.pop();
+    if (!out.includes(item)) {
+      out.push(item);
+    }
+  } while (arr.length);
+  return out;
 }

@@ -4,12 +4,15 @@
   "version": "0.2.0",
   "main": "lib/index.js",
   "dependencies": {
-    "change-case": "^3.0.1",
-    "lodash": "^4.17.4",
-    "moment": "^2.19.1"
+    "babel-minify": "^0.2.0",
+    "escape-html": "^1.0.3",
+    "typescript": "^2.5.3",
+    "webpack": "^3.8.1",
+    "superjucks": "0.2.0"
   },
   "scripts": {
     "build": "tsc",
-    "lint": "tslint --project ../../tslint.json"
+    "lint": "tslint --project ../../tslint.json",
+    "bundle": "node build"
   }
 }

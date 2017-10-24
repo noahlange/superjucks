@@ -2,7 +2,7 @@ import test, { TestContext } from 'ava';
 import Superjucks from '../configs/Superjucks/Config';
 import * as Nodes from '../nodes/index';
 import { parse } from '../Parser';
-import { ast as p, transform } from './helpers/parse';
+import { parse as p, transform } from './helpers/parse';
 
 test('should parse literal types', t => {
   t.deepEqual(p('{{ 1 }}'), [Nodes.Root, [Nodes.Output, [Nodes.Literal, 1]]]);

@@ -2,6 +2,7 @@ import test from 'ava';
 import Frame from '../../Frame';
 import * as Nodes from '../../nodes/index';
 import compile from '../helpers/compile';
+import run from '../helpers/run';
 
 test('should compile an "await" node', async t => {
   const frame = new Frame();
@@ -17,4 +18,8 @@ test('should compile an "await" node', async t => {
     body: new Nodes.Symbol(0, 0, { value: 'promise' })
   });
   t.is(await compile(ast), 'await lookup(\'promise\')');
+});
+
+test('should compile an "await" function', async t => {
+  t.is(await run('{{ await true }}'), 'true');
 });

@@ -14,9 +14,6 @@ export default class InNode extends Node {
     while (true) {
       // check if the next token is 'not'
       tok = parser.nextToken();
-      if (!tok) {
-        break;
-      }
       invert = (tok.type === Token.SYMBOL && tok.value === 'not');
       // if it wasn't 'not', put it back
       if (!invert) {
@@ -37,7 +34,11 @@ export default class InNode extends Node {
     }
     return node;
   }
-  public compile() {
-    return;
+  public compile(compiler: Compiler, frame: Frame): void {
+    compiler.emit('lib.contains(');
+    compiler.compile(this.right, frame);
+    compiler.emit(', ', false);
+    compiler.compile(this.left, frame);
+    compiler.emit(')');
   }
 }

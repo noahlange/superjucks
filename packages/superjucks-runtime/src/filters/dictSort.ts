@@ -1,10 +1,8 @@
-import { isObject } from 'lodash';
-
 export default function dictsort<T>(object: T, caseSensitive?: boolean, by?: 'key' | 'value'): Array<[keyof T, T]> {
-  if (!isObject(object)) {
-    throw new Error('dictsort filter: object must be an object');
-  }
 
+  if (!object || !object.toString().match(/object Object/)) {
+    throw new Error('dictsort: You must pass an object to sort');
+  }
   const array: Array<[ keyof T, T ]> = Object.keys(object).map(k => [ k, object[k] ]) as any;
   let si: 0 | 1;
   if (by === undefined || by === 'key') {

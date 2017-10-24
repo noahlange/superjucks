@@ -9,6 +9,7 @@
     "lodash": "^4.17.4",
     "superjucks-runtime": "0.2.0"
   },
+  "main": "lib/index.js",
   "scripts": {
     "build": "tsc",
     "lint": "tslint --project ../../tslint.json"

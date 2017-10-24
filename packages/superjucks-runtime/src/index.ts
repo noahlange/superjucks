@@ -1,4 +1,3 @@
-import * as Filters from './filters/index';
-import * as Tests from './test/index';
+import runtime from './runtime';
 
-export { Filters, Tests };
+export default runtime;

@@ -1,5 +1,5 @@
 import Node from '../../Node';
-import { parse } from '../../Parser';
+import { parse as _ } from '../../Parser';
 
 export function transform(tree: any) {
   function _transform(node: Node) {
@@ -20,6 +20,10 @@ export function transform(tree: any) {
   return _transform(tree);
 }
 
-export function ast(s: string, config?: any): any {
-  return transform(parse(s, config));
+export function ast(s: string, config?: any) {
+  return _(s, config);
+}
+
+export function parse(s: string, config?: any): any {
+  return transform(ast(s, config));
 }
