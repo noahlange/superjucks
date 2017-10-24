@@ -65,20 +65,6 @@ export default function runtime(ctx: any, cfg: Config, frame: Frame) {
     buffer,
     contains,
     entries,
-    frame,
-    lookup: (name: string, innerFrame?: Frame) => {
-      const out = (innerFrame || frame).lookup(name);
-      return ctx.lookup(name);
-    },
-    get(val: any, path: string) {
-      const obj = val === undefined ? {} : val;
-      if (typeof obj[path] === 'function') {
-        obj[path] = obj[path].bind(obj);
-      }
-      return obj[path];
-    },
-    set: (name: string, val: any) => {
-      ctx.setVariable(name, val);
-    }
+    frame
   };
 }
