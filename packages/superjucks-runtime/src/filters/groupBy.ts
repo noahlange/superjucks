@@ -1,4 +1,4 @@
-type IOut<T extends object> = {
+type IOut<T extends { [key: string]: any }> = {
   [K in T[keyof T]]: T[];
 };
 

@@ -3,16 +3,15 @@
   "description": "Superjucks runtime library.",
   "version": "0.2.0",
   "main": "lib/index.js",
+  "devDependencies": {
+    "@types/escape-html": "^0.0.20"
+  },
   "dependencies": {
-    "babel-minify": "^0.2.0",
     "escape-html": "^1.0.3",
-    "typescript": "^2.5.3",
-    "webpack": "^3.8.1",
     "superjucks": "0.2.0"
   },
   "scripts": {
     "build": "tsc",
-    "lint": "tslint --project ../../tslint.json",
-    "bundle": "node build"
+    "lint": "tslint --project ../../tsconfig.json"
   }
 }

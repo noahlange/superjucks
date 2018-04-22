@@ -5,8 +5,6 @@ import * as Tests from './test/index';
 
 const escaped = '__superjucks_escaped__';
 
-export { Filters, Tests };
-
 export function brandSafeString(str: string): any {
   // tslint:disable-next-line no-construct
   const out = new String(str);
@@ -58,13 +56,28 @@ export function contains(val: any, key: string | number): boolean {
   }
 }
 
-export default function runtime(ctx: any, cfg: Config, frame: Frame) {
+export default function runtime(ctx: any, cfg: any, frame: Frame) {
   this.ctx = ctx;
   const buffer = new Buffer();
   return {
     buffer,
     contains,
     entries,
-    frame
+    filter: (filter: string, ...args: any[]) =>
+      cfg.filters[filter].apply(this, args),
+    frame,
+    // @todo stub
+    lookup: k => ctx[k],
+    range: (min, max, step = 1, inclusive = false) => {
+      const len = Math.max(Math.ceil((max - min) / step), 0);
+      const res = Array(len);
+      let idx = 0;
+      for (let x = min; inclusive ? (x <= max) : (x < max); x += step) {
+        res[idx++] = x;
+      }
+      return res;
+    }
   };
 }
+
+export { Filters, Tests };
