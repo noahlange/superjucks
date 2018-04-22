@@ -35,10 +35,10 @@ export default class InNode extends Node {
     return node;
   }
   public compile(compiler: Compiler, frame: Frame): void {
-    compiler.emit('lib.contains(');
+    compiler.emit('lib.contains(', false);
     compiler.compile(this.right, frame);
     compiler.emit(', ', false);
     compiler.compile(this.left, frame);
-    compiler.emit(')');
+    compiler.emit(')', false);
   }
 }

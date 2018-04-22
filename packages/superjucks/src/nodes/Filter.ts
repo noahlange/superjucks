@@ -7,9 +7,10 @@ import Node from '../Node';
 import Parser from '../Parser';
 
 import ListNode from './List';
-import SymbolNode from './Symbol';
+import LiteralNode from './Literal';
 
 export default class FilterNode extends Node {
+
   public static parse(parser: Parser, next: () => Node) {
     let node = next();
     while (parser.skip(Token.PIPE)) {
@@ -24,7 +25,7 @@ export default class FilterNode extends Node {
         );
       }
 
-      name = new SymbolNode(tok.line, tok.col, { value: name });
+      name = new LiteralNode(tok.line, tok.col, { value: name });
       const args = new ListNode(name.line, name.col, { children: [node] });
       node = new FilterNode(name.line, name.col, { name, args });
 
@@ -36,9 +37,23 @@ export default class FilterNode extends Node {
 
     return node;
   }
-  public name: SymbolNode;
+
+  public name: LiteralNode;
   public args: ListNode;
-  public compile() {
-    return;
+
+  public compile(compiler: Compiler, frame: Frame) {
+    const args = this.args.children;
+    compiler.emit('lib.filter(');
+    compiler.compile(this.name, frame);
+    compiler.emit(', ', false);
+    // ListNodes, by default, emit parens, so we've copied the generation codee
+    // here, sans parens.
+    for (const child of args) {
+      compiler.compile(child, frame);
+      if (args.indexOf(child) < args.length - 1) {
+        compiler.emit(', ', false);
+      }
+    }
+    compiler.emit(')', false);
   }
 }

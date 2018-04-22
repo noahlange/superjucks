@@ -20,6 +20,6 @@ export default class RangeNode extends Node {
   public right: any;
   public compile(compiler: Compiler, frame: Frame) {
     const exclusive = this.exclusive ? 'true' : 'false';
-    compiler.emit(`lookup('range')(${ this.left.value }, ${ this.right.value }, 1, ${ exclusive })`, false);
+    compiler.emit(`lib.range(${ this.left.value }, ${ this.right.value }, 1, ${ exclusive })`, false);
   }
 }

@@ -16,13 +16,13 @@ export function parse(
 }
 
 export default class Parser {
-  public breakOnBlocks: any[] | null;
+  public breakOnBlocks: any[] | null = null;
   public lexer: Lexer;
   public config: Config;
   // will assert the existence of filters, tests and globals in the sandbox
   public strict: boolean = true;
   protected peeked: IToken | null = null;
-  protected dropLeadingWhitespace: boolean;
+  protected dropLeadingWhitespace: boolean = false;
 
   public skipValue(type: Token, value: any): boolean {
     const tok = this.nextToken() as IToken;

@@ -12,5 +12,5 @@ test('should compile an in-frame symbol node', async t => {
 
 test('should compile an out-of-frame symbol node', async t => {
   const ast = new Nodes.Symbol(0, 0, { value: 'two' });
-  t.is(await compile(ast), 'lookup(\'two\')');
+  t.is(await compile(ast), 'lib.lookup(\'two\')');
 });

@@ -75,11 +75,11 @@ export default class Lexer {
   public str: string;
   public tags: ITokenizerTags;
   public index: number = 0;
+
   public line: number = 1;
   public col: number = 1;
-
-  public tline: number;
-  public tcol: number;
+  public tline: number = 0;
+  public tcol: number = 0;
 
   private inCode: boolean = false;
   private len: number;

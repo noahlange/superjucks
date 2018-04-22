@@ -57,7 +57,7 @@ export function contains(val: any, key: string | number): boolean {
 }
 
 export default function runtime(ctx: any, cfg: any, frame: Frame) {
-  this.ctx = ctx;
+  this.ctx = ctx || {};
   const buffer = new Buffer();
   return {
     buffer,
@@ -67,7 +67,7 @@ export default function runtime(ctx: any, cfg: any, frame: Frame) {
       cfg.filters[filter].apply(this, args),
     frame,
     // @todo stub
-    lookup: k => ctx[k],
+    lookup: k => this.ctx[k],
     range: (min, max, step = 1, inclusive = false) => {
       const len = Math.max(Math.ceil((max - min) / step), 0);
       const res = Array(len);
@@ -76,6 +76,9 @@ export default function runtime(ctx: any, cfg: any, frame: Frame) {
         res[idx++] = x;
       }
       return res;
+    },
+    test: (test: string, ...args: any[]) => {
+      return cfg.tests[test].apply(this, args);
     }
   };
 }

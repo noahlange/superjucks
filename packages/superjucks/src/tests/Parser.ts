@@ -192,7 +192,7 @@ test('should parse "await" operator', t => {
       Nodes.Output,
       [
         Nodes.Filter,
-        [Nodes.Symbol, 'foo'],
+        [Nodes.Literal, 'foo'],
         [Nodes.List, [Nodes.Await, [Nodes.Symbol, 'bar']]]
       ]
     ]

@@ -2,6 +2,7 @@ import test from 'ava';
 import * as Nodes from '../../nodes/index';
 import compile from '../helpers/compile';
 import { parse as p } from '../helpers/parse';
+import run from '../helpers/run';
 
 test('should parse is operator', t => {
   t.deepEqual(p('{{ x is callable }}'), [
@@ -53,7 +54,7 @@ test('should compile an is-not node', async t => {
   });
   t.is(
     await compile(ast),
-    "!((await env.getTest('callable').call(ctx, lookup('foo'))) === true)"
+    "!((await lib.test('callable', lib.lookup('foo'))) === true)"
   );
 });
 
@@ -69,6 +70,13 @@ test('should compile an is-not node', async t => {
   });
   t.is(
     await compile(ast),
-    "(await env.getTest('greaterThan').call(ctx, lookup('foo'), 5)) === true"
+    "(await lib.test('greaterThan', lib.lookup('foo'), 5)) === true"
   );
+});
+
+test('should execute a test', async t => {
+  const a = await run('{{ foo is defined }}');
+  const b = await run('{{ foo is not defined }}');
+  t.is(a, 'false');
+  t.is(b, 'true');
 });

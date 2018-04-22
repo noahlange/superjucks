@@ -17,7 +17,7 @@ test('should compile an "await" node', async t => {
   const ast = new Nodes.Await(0, 0, {
     body: new Nodes.Symbol(0, 0, { value: 'promise' })
   });
-  t.is(await compile(ast), 'await lookup(\'promise\')');
+  t.is(await compile(ast), 'await lib.lookup(\'promise\')');
 });
 
 test('should compile an "await" function', async t => {

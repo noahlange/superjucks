@@ -2,6 +2,7 @@ import test from 'ava';
 import * as Nodes from '../../nodes/index';
 import compile from '../helpers/compile';
 import { parse as p } from '../helpers/parse';
+import run from '../helpers/run';
 
 test('should parse if blocks', t => {
   t.deepEqual(p('{% if foo %}{{ foo }}{% else if bar %}{{ bar }}{% endif %}'), [
@@ -41,10 +42,10 @@ test('should parse if blocks', t => {
 });
 
 test('should compile if blocks', async t => {
-  const out = `if (lookup('foo') && lookup('bar')) {
-  buffer.esc(await lookup('bar')());
+  const out = `if (lib.lookup('foo') && lib.lookup('bar')) {
+  buffer.esc(await lib.lookup('bar')());
 } else {
-  if (lookup('baz')) {
+  if (lib.lookup('baz')) {
     buffer.write('nada');
   }
 }
@@ -80,4 +81,10 @@ test('should compile if blocks', async t => {
   });
 
   t.is(await compile(ast), out);
+});
+
+test('should evaluate if blocks', async t => {
+  const tpl = '{% if foo %}{{ bar }}{% else %}{{ baz }}{% endif %}';
+  t.is(await run(tpl, { foo: false, bar: 2, baz: 3 }), '3');
+  t.is(await run(tpl, { foo: true, bar: 2, baz: 3 }), '2');
 });

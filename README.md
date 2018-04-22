@@ -56,8 +56,7 @@ Entirely new, incompletely-tested features include:
 - `for-await-of` for iteration on async generators (you'll need to precompile
   and transpile to use this feature)
 - tests
-- additional filters from Liquid, Twig and Jinja, including a built-in `date`
-  filter powered by `moment.js`
+- additional filters from Liquid, Twig and Jinja
 - Liquid/Twig-style inclusive/exclusive range operator (`..`, `...`)
 - new blocks ported from Liquid/Jinja/Twig (`switch`, `unless`)
 

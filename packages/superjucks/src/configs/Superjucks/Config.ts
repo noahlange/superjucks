@@ -81,7 +81,7 @@ export const syntax = {
 export default class Superjucks extends Config {
   public syntax = syntax;
   public filters = Filters;
-  public tests = {};
+  public tests = Tests;
   public tags = {
     Block: Nodes.Block,
     Export: Nodes.Export,

@@ -1,5 +1,6 @@
 {
   "name": "superjucks-lerna",
+  "private": true,
   "version": "0.2.0",
   "scripts": {
     "bootstrap": "lerna bootstrap --hoist",
@@ -22,9 +23,9 @@
     "ava": "^0.22.0",
     "coveralls": "^3.0.0",
     "lerna": "^2.4.0",
-    "lodash": "^4.17.4",
     "nyc": "^11.2.1",
     "tslint": "^5.7.0",
     "typescript": "^2.5.3"
-  }
+  },
+  "dependencies": {}
 }

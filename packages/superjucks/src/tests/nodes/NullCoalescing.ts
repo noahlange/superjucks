@@ -22,7 +22,7 @@ test('should compile a ternary node', async t => {
   const astOne = new Nodes.NullCoalescing(0, 0, { left, right });
   t.is(
     await compile(astOne),
-    "(lookup('bar') === null || lookup('bar') === undefined) ? 'foo' : lookup('bar')"
+    "(lib.lookup('bar') === null || lib.lookup('bar') === undefined) ? 'foo' : lib.lookup('bar')"
   );
 });
 

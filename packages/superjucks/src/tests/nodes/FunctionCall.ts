@@ -22,5 +22,5 @@ test('function call should look batshit without variables in frame', async t => 
   const args = new Nodes.List(0, 0, { children: [bar, baz] });
   const name = new Nodes.Symbol(0, 0, { value: 'foo' });
   const ast = new Nodes.FunctionCall(0, 0, { name, args });
-  t.is(await compile(ast), 'await lookup(\'foo\')(lookup(\'bar\'), lookup(\'baz\'))');
+  t.is(await compile(ast), 'await lib.lookup(\'foo\')(lib.lookup(\'bar\'), lib.lookup(\'baz\'))');
 });

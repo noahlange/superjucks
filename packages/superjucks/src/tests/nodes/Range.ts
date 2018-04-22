@@ -7,7 +7,7 @@ test('should compile an inclusive range node', async t => {
     left: new Nodes.Literal(0, 0, { value: -5 }),
     right: new Nodes.Symbol(0, 0, { value: 'foobar' })
   });
-  t.is(await compile(ast), 'lookup(\'range\')(-5, foobar, 1, false)');
+  t.is(await compile(ast), 'lib.range(-5, foobar, 1, false)');
 });
 
 test('should compile an exclusive range node', async t => {
@@ -16,5 +16,5 @@ test('should compile an exclusive range node', async t => {
     left: new Nodes.Literal(0, 0, { value: 1 }),
     right: new Nodes.Literal(0, 0, { value: 3 }),
   });
-  t.is(await compile(ast), 'lookup(\'range\')(1, 3, 1, true)');
+  t.is(await compile(ast), 'lib.range(1, 3, 1, true)');
 });

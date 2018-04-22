@@ -2,16 +2,13 @@
   "name": "superjucks",
   "description": "Nunjucks-inspired templating language from the future!",
   "version": "0.2.0",
-  "devDependencies": {
-    "@types/lodash": "^4.14.77"
-  },
   "dependencies": {
-    "lodash": "^4.17.4",
-    "superjucks-runtime": "0.2.0"
+    "superjucks-runtime": "0.2.0",
+    "lodash.set": "^4.3.2"
   },
   "main": "lib/index.js",
   "scripts": {
     "build": "tsc",
-    "lint": "tslint --project ../../tslint.json"
+    "lint": "tslint --project ../../tsconfig.json"
   }
 }

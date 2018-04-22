@@ -14,6 +14,12 @@ export default class ConcatNode extends Node {
   }
 
   public compile(compiler: Compiler, frame: Frame): void {
-    return;
+    compiler.emit('`${', false);
+    compiler.compile(this.left, frame);
+    compiler.emit('}`', false);
+    compiler.emit(' + ', false);
+    compiler.emit('`${', false);
+    compiler.compile(this.right, frame);
+    compiler.emit('}`', false);
   }
 }

@@ -50,6 +50,6 @@ test('should compile a ternary node', async t => {
     cond: condNode
   });
 
-  t.is(await compile(astOne), 'lookup(\'bar\') ? \'foo\' : null');
-  t.is(await compile(astTwo), 'lookup(\'bar\') ? \'foo\' : \'\'');
+  t.is(await compile(astOne), 'lib.lookup(\'bar\') ? \'foo\' : null');
+  t.is(await compile(astTwo), 'lib.lookup(\'bar\') ? \'foo\' : \'\'');
 });
