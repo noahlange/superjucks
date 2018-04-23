@@ -81,6 +81,7 @@ export function iterasync(i, forEach, ifElse) {
     resolve();
   });
 }
+
 export function itersync(iterable: Iterable<any>, forEach, ifElse) {
   const promises = [];
   return new Promise(async (resolve, reject) => {

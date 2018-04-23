@@ -61,7 +61,7 @@ test('sync should iterate through a synchronous iterator', async t => {
 });
 
 test('async should iterate through an asynchronous iterator', async t => {
-  const z = async function* (item) {
+  const z = async function*(item) {
     for (const i of item) {
       yield i;
     }
