@@ -9,13 +9,14 @@ export default class DictNode extends Aggregate {
     compiler.emit('{ ', false);
     for (const child of this.children) {
       if (child instanceof Nodes.Symbol) {
-        // if we're using symbols as keys, make sure they're in frame.
-        if (!frame.get(child.value)) {
+        // if we're using symbols as shorthand keys, make sure they're in frame.
+        if (frame.get(child.value) === null) {
           throw new Error(
-            `Cannot compile "${child.value}" into shorthand dictionary without corresponding frame variable.`
+            `Cannot compile "${child.value}" into shorthand dictionary item without corresponding frame variable.`
           );
         }
       }
+      frame.set(child.value, true);
       compiler.compile(child, frame);
       if (this.children.indexOf(child) < this.children.length - 1) {
         compiler.emit(', ', false);

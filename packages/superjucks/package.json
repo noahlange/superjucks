@@ -9,6 +9,7 @@
   "main": "lib/index.js",
   "scripts": {
     "build": "tsc",
+    "watch": "tsc -w",
     "lint": "tslint --project ../../tsconfig.json"
   }
 }

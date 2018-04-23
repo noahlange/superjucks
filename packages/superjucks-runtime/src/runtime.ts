@@ -66,18 +66,55 @@ export function range(min: number, max: number, step: number = 1, inclusive: boo
   return res;
 }
 
+export function iterasync(i, forEach, ifElse) {
+  const promises = [];
+  return new Promise(async (resolve, reject) => {
+    for await (const item of i) {
+      promises.push(forEach(item));
+    }
+    if (promises.length === 0) {
+      promises.push(ifElse());
+    }
+    for (const p of promises) {
+      await p;
+    }
+    resolve();
+  });
+}
+export function itersync(iterable: Iterable<any>, forEach, ifElse) {
+  const promises = [];
+  return new Promise(async (resolve, reject) => {
+    for (const item of iterable) {
+      promises.push(forEach(item));
+    }
+    if (promises.length === 0) {
+      promises.push(ifElse());
+    }
+    for (const p of promises) {
+      await p;
+    }
+    resolve();
+  });
+}
+
 export default function runtime(ctx: any, cfg: any, frame: Frame) {
   this.ctx = ctx || {};
   const buffer = new Buffer();
   return {
+    Buffer,
     buffer,
     contains,
     entries,
     filter: (filter: string, ...args: any[]) =>
       cfg.filters[filter].apply(this, args),
     frame,
-    // @todo stub
-    lookup: k => this.ctx[k],
+    iter: {
+      async: iterasync,
+      sync: itersync
+    },
+    lookup: (k) => (k in this.ctx)
+      ? this.ctx[k]
+      : frame.lookup(k),
     range,
     test: (test: string, ...args: any[]) => {
       return cfg.tests[test].apply(this, args);

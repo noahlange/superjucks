@@ -1,6 +1,7 @@
 import test from 'ava';
 import * as Nodes from '../../nodes/index';
 import { parse as p } from '../helpers/parse';
+import run from '../helpers/run';
 
 test('should parse for blocks', t => {
   t.deepEqual(p('{% for x of [1, 2] %}{{ x }}{% endfor %}'), [
@@ -100,4 +101,13 @@ test('should attempt to unpack key-valued objects', t => {
 
 test('should throw on old keyword', t => {
   t.throws(() => p('{% for { x, y } in [] %}{{ x }}{{ y }}{% endfor %}'));
+});
+
+test('should compile into lib fn call', async t => {
+  t.is(
+    await run(
+      `{%- for a of iterable -%}{{ a }}: (happy!)\n{% else -%}(sad!){%- endfor -%}`,
+      { iterable: '12'}
+    ),
+  '1: (happy!)\n2: (happy!)\n');
 });

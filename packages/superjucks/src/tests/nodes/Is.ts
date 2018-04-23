@@ -54,7 +54,7 @@ test('should compile an is-not node', async t => {
   });
   t.is(
     await compile(ast),
-    "!((await lib.test('callable', lib.lookup('foo'))) === true)"
+    "!(await lib.test('callable', lib.lookup('foo')) === true)"
   );
 });
 
@@ -70,7 +70,7 @@ test('should compile an is-not node', async t => {
   });
   t.is(
     await compile(ast),
-    "(await lib.test('greaterThan', lib.lookup('foo'), 5)) === true"
+    "await lib.test('greaterThan', lib.lookup('foo'), 5) === true"
   );
 });
 
