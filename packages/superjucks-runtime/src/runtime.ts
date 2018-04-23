@@ -56,6 +56,16 @@ export function contains(val: any, key: string | number): boolean {
   }
 }
 
+export function range(min: number, max: number, step: number = 1, inclusive: boolean = false) {
+  const len = Math.max(Math.ceil((max - min) / step), 0);
+  const res = Array(len);
+  let idx = 0;
+  for (let x = min; inclusive ? (x <= max) : (x < max); x += step) {
+    res[idx++] = x;
+  }
+  return res;
+}
+
 export default function runtime(ctx: any, cfg: any, frame: Frame) {
   this.ctx = ctx || {};
   const buffer = new Buffer();
@@ -68,15 +78,7 @@ export default function runtime(ctx: any, cfg: any, frame: Frame) {
     frame,
     // @todo stub
     lookup: k => this.ctx[k],
-    range: (min, max, step = 1, inclusive = false) => {
-      const len = Math.max(Math.ceil((max - min) / step), 0);
-      const res = Array(len);
-      let idx = 0;
-      for (let x = min; inclusive ? (x <= max) : (x < max); x += step) {
-        res[idx++] = x;
-      }
-      return res;
-    },
+    range,
     test: (test: string, ...args: any[]) => {
       return cfg.tests[test].apply(this, args);
     }

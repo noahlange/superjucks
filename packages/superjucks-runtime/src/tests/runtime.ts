@@ -1,5 +1,5 @@
 import test from 'ava';
-import { brandSafeString, contains, copySafeness, entries } from '../runtime';
+import { brandSafeString, contains, copySafeness, entries, range } from '../runtime';
 
 test('entries should split non-iterables into iterables', t => {
   const hash = { one: 1, two: 2 };
@@ -28,4 +28,13 @@ test('copySafeness should copy safeness from one string to another', async t => 
   t.is(copySafeness(bone, btwo), btwo);
   t.is(copySafeness(one, btwo), two);
   t.is(copySafeness(bone, two).__superjucks_escaped__, true);
+});
+
+test('range should generate an array of numbers', async t => {
+  const r1 = range(-4, 4, 2, true);
+  const r2 = range(-3, 3, 2, false);
+  const r3 = range(-3, 3);
+  t.deepEqual(r1, [ -4, -2, 0, 2, 4 ]);
+  t.deepEqual(r2, [ -3, -1, 1 ]);
+  t.deepEqual(r3, [ -3, -2, -1, 0, 1, 2 ]);
 });
