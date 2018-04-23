@@ -2,7 +2,7 @@
  * Implementation based on Lodash's `chunk` method, released under the MIT
  * license.
  */
-function _chunk<T>(array: T[], size: number) {
+function _chunk<T>(array: T[] | null, size: number) {
   size = Math.max(size, 0);
   const length = array == null ? 0 : array.length;
   let index = 0;
@@ -14,7 +14,7 @@ function _chunk<T>(array: T[], size: number) {
   return result;
 }
 
-export default function chunk<T>(array: T[], count: number, filler: any = null): T[][] {
+export default function chunk<T>(array: T[] | null, count: number, filler: any = null): T[][] {
   const res = _chunk(array, count);
   if (filler) {
     const pop = res.pop();

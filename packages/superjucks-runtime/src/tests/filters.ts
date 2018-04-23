@@ -1,6 +1,7 @@
 import test, { TestContext } from 'ava';
 import * as filters from '../filters/index';
 import safe from '../filters/safe';
+import { brandSafeString } from '../runtime';
 
 test('abs should return the absolute value of a number', t => {
   t.is(filters.abs(-3.5), 3.5);
@@ -53,6 +54,7 @@ test('chunk should chunk an array into n-lengthed arrays', async t => {
   t.throws(() => filters.chunk([], -2));
   t.is(chunked, '12\n34\n5foobar');
   t.is(chunked2, '12\n34');
+  t.is(filters.chunk(null, 2, '').join(''), '');
 });
 
 test('compact should remove duplicates from an array', async t => {
@@ -138,6 +140,7 @@ test('int should coerce a value to an int', async t => {
 test('float should coerce a value to an float', async t => {
   t.is(filters.float('234'), 234.0);
   t.is(filters.float(234), 234.0);
+  t.is(filters.float('HEY-O', 'WHOA'), 'WHOA');
 });
 
 test('group by should group an object by an attribute', t => {
@@ -199,8 +202,15 @@ test('map should map an array on a key', async t => {
   );
 });
 
+test('escape should escape html', async t => {
+  t.is(filters.escape('<div>').toString(), '&lt;div&gt;');
+  const s = brandSafeString('<div>');
+  t.is(filters.escape(s), s);
+});
+
 test('newlineToBr should replace newlines with <br /> tags', async t => {
   t.is(filters.newlineToBr('\n'), '<br />\n');
+  t.is(filters.newlineToBr(null), '');
 });
 
 test('prepend should return prepend one string to another', async t => {
@@ -306,6 +316,18 @@ test('wordcount should return the wordcount of a string', async t => {
 
 test('truncate should truncate a string', async t => {
   const str = 'Long long ago in a galaxy far far away...';
+  t.is(filters.truncate(), '');
+  t.is(filters.truncate([
+    'XOXO ugh single-origin coffee taxidermy unicorn authentic meh dreamcatcher semiotics',
+    'mustache palo santo wolf etsy. Selfies asymmetrical la croix echo park, bicycle rights',
+    'selvage fam. Prism irony locavore, man bun coloring book cronut pabst YOLO. Raw denim ',
+    'banjo shaman semiotics pork belly. Post-ironic keffiyeh man bun cold-pressed small batch ',
+    'adaptogen fam selvage copper mug shoreditch beard.'
+  ].join(' ')), [
+    'XOXO ugh single-origin coffee taxidermy unicorn authentic meh dreamcatcher semiotics',
+    'mustache palo santo wolf etsy. Selfies asymmetrical la croix echo park, bicycle rights',
+    'selvage fam. Prism irony locavore, man bun coloring book cronut pabst YOLO. Raw denim...'
+  ].join(' '));
   t.is(filters.truncate(str, 3, true, '-'), 'Lon-');
   t.is(filters.truncate(str, 3, false, '-'), 'Long-');
   t.is(filters.truncate(str), 'Long long ago in a galaxy far far away...');
@@ -316,6 +338,8 @@ test('truncate words should truncate x words of arbitrary length to n words', as
     filters.truncateWords('The cat came back the very next day', 4, '...'),
     'The cat came back...'
   );
+  t.is(filters.truncateWords(), '');
+  t.is(filters.truncateWords('You are tearing me apart, Lisa!'), 'You are tearing...');
   t.is(filters.truncateWords('Oh hi, Mark!', 4), 'Oh hi, Mark!');
 });
 
