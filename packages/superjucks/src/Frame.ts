@@ -8,7 +8,6 @@ export default class Frame {
   public set(name: string, val: any, resolveUp: boolean = false): void {
     // Allow variables with dots by automatically creating the nested structure
     let frame: this | Frame | null = this;
-    const obj = this.variables;
 
     if (resolveUp) {
       frame = this.resolve(name.split('.')[0], true);
@@ -17,12 +16,14 @@ export default class Frame {
         return;
       }
     }
-    set(obj, name, val);
+    set(this.variables, name, val);
   }
 
   public get(name: string): any | null {
     const val = this.variables[name];
-    return val === undefined ? null : val;
+    return val === undefined
+      ? null
+      : val;
   }
 
   public resolve(name: string, forWrite?: boolean): null | Frame {
@@ -41,8 +42,11 @@ export default class Frame {
       if (val !== undefined) {
         return val;
       }
-      return p && p.lookup(name);
+      if (p) {
+        return p.lookup(name);
+      }
     }
+    return;
   }
 
   public constructor(

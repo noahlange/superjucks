@@ -1,5 +1,8 @@
 import test from 'ava';
-import { brandSafeString, contains, copySafeness, entries, range } from '../runtime';
+import { brandSafeString, contains, copySafeness, entries, iterasync, itersync, range } from '../runtime';
+
+(Symbol as any).asyncIterator = (Symbol as any).asyncIterator
+  || Symbol.for('Symbol.asyncIterator');
 
 test('entries should split non-iterables into iterables', t => {
   const hash = { one: 1, two: 2 };
@@ -37,4 +40,48 @@ test('range should generate an array of numbers', async t => {
   t.deepEqual(r1, [ -4, -2, 0, 2, 4 ]);
   t.deepEqual(r2, [ -3, -1, 1 ]);
   t.deepEqual(r3, [ -3, -2, -1, 0, 1, 2 ]);
+});
+
+test('sync should iterate through a synchronous iterator', async t => {
+  const a = [];
+  const b = [];
+  const x = [ 1, 2, 3, 4, 5 ];
+  const y = '';
+
+  itersync(x, item => {
+    a.push(item);
+  }, () => a.push('☹️'));
+
+  itersync(y, item => {
+    b.push(item);
+  }, () => b.push('☹️'));
+
+  t.deepEqual(a, x);
+  t.deepEqual(b, [ '☹️' ]);
+});
+
+test('async should iterate through an asynchronous iterator', async t => {
+  const z = async function*(item) {
+    for (const i of item) {
+      yield i;
+    }
+  };
+
+  const a = [];
+  const b = [];
+  const x = [ 1, 2, 3, 4, 5 ];
+  const y = '';
+
+  await iterasync(z(x), item => {
+    a.push(item);
+  }, () => a.push('☹️'));
+
+  await iterasync(z(y), item => {
+    b.push(item);
+  }, () => b.push('☹️'));
+
+  console.info(a, b);
+
+  t.deepEqual(a, [ 1, 2, 3, 4, 5 ]);
+  t.deepEqual(b, [ '☹️' ]);
 });

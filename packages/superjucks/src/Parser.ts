@@ -130,14 +130,19 @@ export default class Parser {
           );
         }
       }
+
       if (node instanceof Nodes.Dict) {
         // TODO: check for errors
-        const key = this.parsePrimary();
+        let key = this.parsePrimary();
         // we expect a key/value pair for dicts, separated by a colon
         if (!this.skip(Token.COLON)) {
+          // we're working with a shorthand dictionary entry
           node.addChild(key);
         } else {
-          // TODO: check for errors
+          // longhand dictionary entry, valid keys must be literals or variable interpolations
+          if (!(key instanceof Nodes.Array)) {
+            key = new Nodes.Literal(key.line, key.col, { value: key.value });
+          }
           const value = this.parseExpression();
           node.addChild(new Nodes.Pair(key.line, key.col, { key, value }));
         }

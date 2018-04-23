@@ -55,21 +55,42 @@ test('should parse aggregate types', t => {
       [Nodes.List, [Nodes.Literal, 1], [Nodes.Literal, 2], [Nodes.Literal, 3]]
     ]
   ]);
-  t.deepEqual(p(`{{ { hoo, boy } }}`), [
-    Nodes.Root,
-    [Nodes.Output, [Nodes.Dict, [Nodes.Symbol, 'hoo'], [Nodes.Symbol, 'boy']]]
-  ]);
-
-  // this should probably be 'literal', 'literal' unless it has the square
-  // brackets
-  t.deepEqual(p('{{ { foo: 1, "two": 2 } }}'), [
+  t.deepEqual(p(`{{ { hoo: { bar: 2 }, boy } }}`), [
     Nodes.Root,
     [
       Nodes.Output,
       [
         Nodes.Dict,
-        [Nodes.Pair, [Nodes.Symbol, 'foo'], [Nodes.Literal, 1]],
-        [Nodes.Pair, [Nodes.Literal, 'two'], [Nodes.Literal, 2]]
+        [
+          Nodes.Pair,
+          [Nodes.Literal, 'hoo'],
+          [
+            Nodes.Dict,
+            [Nodes.Pair, [Nodes.Literal, 'bar'], [Nodes.Literal, 2]]
+          ]
+        ],
+        [Nodes.Symbol, 'boy']
+      ]
+    ]
+  ]);
+
+  // this should probably be 'literal', 'literal' unless it has the square
+  // brackets
+  t.deepEqual(p('{{ { foo: 1, ["two" + 2]: 2 } }}'), [
+    Nodes.Root,
+    [
+      Nodes.Output,
+      [
+        Nodes.Dict,
+        [Nodes.Pair, [Nodes.Literal, 'foo'], [Nodes.Literal, 1]],
+        [
+          Nodes.Pair,
+          [
+            Nodes.Array,
+            [Nodes.Add, [Nodes.Literal, 'two'], [Nodes.Literal, 2]]
+          ],
+          [Nodes.Literal, 2]
+        ]
       ]
     ]
   ]);

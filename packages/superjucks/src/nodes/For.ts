@@ -1,9 +1,12 @@
+import Compiler from '../Compiler';
+import Frame from '../Frame';
 import { Token } from '../Lexer';
 import Node from '../Node';
 import * as Nodes from '../nodes/index';
 import Parser from '../Parser';
 
 export default class ForNode extends Node {
+
   public static parse(parser: Parser) {
     const { keywords, operators, tags } = parser.config.syntax;
     const start = tags.FOR;
@@ -18,7 +21,7 @@ export default class ForNode extends Node {
       node.async = true;
     }
 
-    node.name = parser.parsePrimary();
+    node.name = parser.parsePrimary() as Nodes.Dict | Nodes.Symbol | Nodes.Array;
 
     if (!(node.name instanceof Nodes.Symbol
       || node.name instanceof Nodes.Dict
@@ -55,13 +58,37 @@ export default class ForNode extends Node {
     return node;
   }
 
-  public async: boolean;
   public iterable: Node;
-  public name: Node;
+  public name: Nodes.Array | Nodes.Symbol | Nodes.Dict;
   public body: Node;
+  public async: boolean; // async iterable
   public else: Node;
 
-  public compile() {
-    return;
+  public compile(compiler: Compiler, frame: Frame) {
+
+    const f = new Frame(frame);
+    // we're going to do a wrapper function for now.
+    compiler.emit(`await lib.${ this.async ? 'iter.async' : 'iter.sync' }(`);
+    // the name of the iterable we're working with
+    compiler.compile(this.iterable, frame);
+    compiler.emit(`, (`, false);
+    // fetch all symbols used in the arg and put them in the callback scope.
+    const vars = this.findAll(Nodes.Symbol);
+    for (const v of vars) {
+      f.set(v.value, true);
+    }
+
+    compiler.compile(this.name, f);
+
+    compiler.emit(') => {\n', false);
+    compiler.indent(() => {
+      compiler.compile(this.body, f);
+    });
+
+    compiler.emitLine('}, () => {');
+    compiler.indent(() => {
+      compiler.compile(this.else, frame);
+    });
+    compiler.emitLine('});');
   }
 }

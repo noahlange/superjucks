@@ -1,9 +1,14 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "es6",
     "module": "commonjs",
     "rootDir": "src",
     "outDir": "lib",
-    "inlineSourceMap": true
+    "inlineSourceMap": true,
+    "lib": [
+      "es2015",
+      "es2017",
+      "esnext.asynciterable"
+    ]
   }
 }

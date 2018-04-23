@@ -3,12 +3,14 @@ import * as escape from 'escape-html';
 export default class Buffer {
   private _buf: string[] = [];
   public esc(val: any) {
-    this._buf.push(escape(val));
+    const v = escape(val);
+    this._buf.push(v === undefined ? '' : v);
   }
   public write(val: any) {
-    this._buf.push(val);
+    const v = val;
+    this._buf.push(v === undefined ? '' : v);
   }
   public out() {
-    return this._buf.join('\n');
+    return this._buf.join('');
   }
 }

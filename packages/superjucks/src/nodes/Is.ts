@@ -25,7 +25,7 @@ export default class IsNode extends Node {
     if (this.right instanceof Nodes.FunctionCall) {
       right = this.right.name.value;
     }
-    compiler.emit(`(await lib.test('${ right }', `, false);
+    compiler.emit(`await lib.test('${ right }', `, false);
     compiler.compile(this.left, frame);
     if (this.right.args) {
       for (const child of this.right.args.children) {
@@ -33,6 +33,6 @@ export default class IsNode extends Node {
         child.compile(compiler, frame);
       }
     }
-    compiler.emit(')) === true', false);
+    compiler.emit(') === true', false);
   }
 }
