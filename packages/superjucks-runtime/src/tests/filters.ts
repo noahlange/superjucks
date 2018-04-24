@@ -451,3 +451,15 @@ test('urlEncode / UrlDecode should do what they say on the tin', t => {
   t.is(filters.urlDecode('foo%20bar'), 'foo bar');
   t.is(filters.urlEncode('foo bar'), 'foo%20bar');
 });
+
+test('keys should return the keys of an object', t => {
+  t.deepEqual(filters.keys({ foo: 'bar' }), [ 'foo' ]);
+});
+
+test('values should return the values of an object', t => {
+  t.deepEqual(filters.values({ foo: 'bar' }), [ 'bar' ]);
+});
+
+test('entries should return the entries of an object', t => {
+  t.deepEqual(filters.entries({ foo: 'bar' }), [ [ 'foo', 'bar' ] ]);
+});

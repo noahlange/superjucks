@@ -9,6 +9,7 @@ import compact from './compact';
 import defaults from './default';
 import dictSort from './dictSort';
 import dump from './dump';
+import entries from './entries';
 import escape from './escape';
 import first from './first';
 import float from './float';
@@ -16,6 +17,7 @@ import groupBy from './groupBy';
 import indent from './int';
 import int from './int';
 import join from './join';
+import keys from './keys';
 import last from './last';
 import length from './length';
 import lower from './lower';
@@ -52,6 +54,7 @@ import upper from './upper';
 import urlDecode from './urlDecode';
 import urlEncode from './urlEncode';
 import urlize from './urlize';
+import values from './values';
 import wordcount from './wordcount';
 
 export {
@@ -67,6 +70,7 @@ export {
   defaults as d,
   dictSort,
   dump,
+  entries,
   escape,
   escape as e,
   first,
@@ -80,6 +84,7 @@ export {
   length as size,
   lower,
   ltrim,
+  keys,
   map,
   newlineToBr,
   newlineToBr as nl2br,
@@ -114,5 +119,6 @@ export {
   urlDecode,
   urlEncode,
   urlize,
+  values,
   wordcount
 };

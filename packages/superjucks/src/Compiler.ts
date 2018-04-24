@@ -5,14 +5,15 @@ import Frame from './Frame';
 import Node from './Node';
 import { parse } from './Parser';
 
-export async function compile(src: string, config: Config) {
-  const c = new Compiler();
-  const p = parse(src, config);
-  await c.compile(p, new Frame());
-  return c.buffer.join('');
-}
-
 export default class Compiler {
+
+  public static async compile(src: string, config: Config) {
+    const c = new Compiler();
+    const p = parse(src, config);
+    await c.compile(p, new Frame());
+    return c.buffer.join('');
+  }
+
   public buffer: string[] = [];
   public template: string;
   public currentIndent: number = 0;

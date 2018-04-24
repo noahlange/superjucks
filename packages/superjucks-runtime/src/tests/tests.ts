@@ -73,7 +73,7 @@ test('iterable should detect whether a value is iterable', async t => {
       }
     }
   };
-  t.is(tests.iterable(ctx.fn), true);
+  t.is(tests.iterable(ctx.fn()), true);
 });
 
 test('number should detect whether a value is numeric', async t => {

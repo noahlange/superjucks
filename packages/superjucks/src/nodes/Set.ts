@@ -51,7 +51,7 @@ export default class SetNode extends Node {
       compiler.emit('let ');
       compiler.compile(this.target, f);
       compiler.emit(' = ', false);
-      compiler.compile(this.value, f);
+      compiler.compile(this.body || this.value, f);
       compiler.emit(';', false);
       compiler.emitLine('');
       for (const sym of symbols) {

@@ -6,5 +6,6 @@ lerna-debug.log
 yarn.lock
 package-lock.json
 .DS_Store
-docs
 superjucks-precompile
+docs
+superjucks-docs

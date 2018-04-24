@@ -1,3 +1,4 @@
+import * as get from 'lodash.get';
 import { Config, Frame } from 'superjucks';
 import Buffer from './Buffer';
 import * as Filters from './filters/index';
@@ -100,15 +101,14 @@ export function itersync(iterable: Iterable<any>, forEach, ifElse) {
 
 export default function runtime(ctx: any, cfg: any, frame: Frame) {
   this.ctx = ctx || {};
-  const buffer = new Buffer();
   return {
     Buffer,
-    buffer,
     contains,
     entries,
     filter: (filter: string, ...args: any[]) =>
       cfg.filters[filter].apply(this, args),
     frame,
+    get,
     iter: {
       async: iterasync,
       sync: itersync

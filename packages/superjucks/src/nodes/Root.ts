@@ -7,7 +7,7 @@ export default class RootNode extends Node {
     const frame = new Frame();
     compiler.emitLine('return async lib => {');
     compiler.indent(() => {
-      compiler.emitLine('const buffer = lib.buffer;');
+      compiler.emitLine('const buffer = new lib.Buffer();');
       for (const child of this.children) {
         child.compile(compiler, frame);
       }

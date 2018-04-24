@@ -13,31 +13,9 @@ export default class Config {
   public operators: any = [];
   public runtime: any;
 
-  public addTest(test: string, fn: any) {
-    this.tests[test] = fn;
-    return this;
-  }
-
-  public hasTest(filter: string) {
-    return filter in this.tests;
-  }
-
   public addFilter(filter: string, fn: any) {
     this.filters[filter] = fn;
     return this;
-  }
-
-  public hasFilter(filter: string) {
-    return filter in this.filters;
-  }
-
-  public addTag(tag: string, node: typeof Node) {
-    this.tags[tag] = node;
-    return this;
-  }
-
-  public hasTag(tag: string) {
-    return tag in this.tags;
   }
 
   public addGlobal(name: string, value: any) {
@@ -45,7 +23,29 @@ export default class Config {
     return this;
   }
 
+  public addTag(tag: string, node: typeof Node) {
+    this.tags[tag] = node;
+    return this;
+  }
+
+  public addTest(test: string, fn: any) {
+    this.tests[test] = fn;
+    return this;
+  }
+
+  public hasFilter(filter: string) {
+    return filter in this.filters;
+  }
+
   public hasGlobal(g: string) {
     return g in this.globals;
+  }
+
+  public hasTag(tag: string) {
+    return tag in this.tags;
+  }
+
+  public hasTest(filter: string) {
+    return filter in this.tests;
   }
 }

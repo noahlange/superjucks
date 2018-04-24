@@ -80,8 +80,6 @@ test('async should iterate through an asynchronous iterator', async t => {
     b.push(item);
   }, () => b.push('☹️'));
 
-  console.info(a, b);
-
   t.deepEqual(a, [ 1, 2, 3, 4, 5 ]);
   t.deepEqual(b, [ '☹️' ]);
 });

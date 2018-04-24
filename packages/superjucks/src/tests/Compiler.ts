@@ -1,5 +1,5 @@
 import test from 'ava';
-import Compiler, { compile } from '../Compiler';
+import Compiler from '../Compiler';
 import Superjucks from '../configs/Superjucks/Config';
 import Frame from '../Frame';
 import * as Nodes from '../nodes/index';
