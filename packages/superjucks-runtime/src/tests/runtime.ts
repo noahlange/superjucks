@@ -1,9 +1,6 @@
 import test from 'ava';
 import { brandSafeString, contains, copySafeness, entries, iterasync, itersync, range } from '../runtime';
 
-(Symbol as any).asyncIterator = (Symbol as any).asyncIterator
-  || Symbol.for('Symbol.asyncIterator');
-
 test('entries should split non-iterables into iterables', t => {
   const hash = { one: 1, two: 2 };
   t.deepEqual(entries(hash), [ [ 'one', 1 ], [ 'two', 2] ]);
