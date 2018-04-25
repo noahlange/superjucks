@@ -48,3 +48,8 @@ test('should compile variable sets', async t => {
   const res = await run('{% set foo = \'bar\' %}{{ foo }}');
   t.is(res, 'bar');
 });
+
+test('should compile block sets', async t => {
+  const res = await run('{% set foo %}bar{% endset %}{{ foo }}');
+  t.is(res, 'bar');
+});
