@@ -51,3 +51,7 @@ test('should parse multiple multiline raw blocks', async t => {
   const foo = await run(`{% raw %}${ str }{% endraw %}`, { foo: 1 });
   t.is(foo, '{{ var }}\n1\n{{ var }}');
 });
+
+test('compilation should be a no-op', async t => {
+  t.is(new Nodes.Raw(1, 2, {}).compile(null, null), undefined);
+});
