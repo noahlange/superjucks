@@ -43,7 +43,6 @@ test('should parse raw with comment blocks', async t => {
 test('should parse multiple raw blocks', async t => {
   const str = `{{ var }}{% endraw %}{{ foo }}{% raw %}{{ var }}`;
   const foo = await run(`{% raw %}${ str }{% endraw %}`, { foo: 1 });
-  console.info(foo);
   t.is(foo, '{{ var }}1{{ var }}');
 });
 
