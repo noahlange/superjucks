@@ -46,6 +46,7 @@ import For from './For';
 import If from './If';
 import Import from './Import';
 import Macro from './Macro';
+import Raw from './Raw';
 import Set from './Set';
 import Switch from './Switch';
 import Unless from './Unless';
@@ -88,6 +89,7 @@ export {
   Pair,
   Pow,
   Range,
+  Raw,
   Root,
   Set,
   Sub,

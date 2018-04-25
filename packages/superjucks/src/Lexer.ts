@@ -89,12 +89,18 @@ export default class Lexer {
 
   public back(): void {
     this.index--;
-    if (this.current() === '\n') {
+    if (this.current === '\n') {
       this.line--;
       const idx = this.str.lastIndexOf('\n', this.index - 1);
       this.col = this.index - (idx === -1 ? 0 : idx);
     } else {
       this.col--;
+    }
+  }
+
+  public backN(n: number): void {
+    for (let i = 0; i < n; i++) {
+      this.back();
     }
   }
 
@@ -118,7 +124,15 @@ export default class Lexer {
     return this.str.charAt(this.index - 1);
   }
 
-  public current() {
+  public get remainder() {
+    if (!this.isFinished()) {
+      return this.str.substr(this.index);
+    } else {
+      return '';
+    }
+  }
+
+  public get current() {
     return !this.isFinished() ? this.str.charAt(this.index) : '';
   }
 
@@ -156,11 +170,11 @@ export default class Lexer {
     this.forward();
     let regexBody = '';
     while (!this.isFinished()) {
-      if (this.current() === '/' && this.previous() !== '\\') {
+      if (this.current === '/' && this.previous() !== '\\') {
         this.forward();
         break;
       } else {
-        regexBody = regexBody + this.current();
+        regexBody = regexBody + this.current;
         this.forward();
       }
     }
@@ -169,9 +183,9 @@ export default class Lexer {
     // https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/RegExp)
     let flags = '';
     while (!this.isFinished()) {
-      const isCurrentAFlag = REGEX_FLAGS.indexOf(this.current()) !== -1;
+      const isCurrentAFlag = REGEX_FLAGS.indexOf(this.current) !== -1;
       if (isCurrentAFlag) {
-        flags = flags + this.current();
+        flags = flags + this.current;
         this.forward();
       } else {
         break;
@@ -205,14 +219,14 @@ export default class Lexer {
       '..',
       '...'
     ];
-    const curComplex = curr + this.current();
+    const curComplex = curr + this.current;
     let type;
     if (complexOps.indexOf(curComplex) !== -1) {
       this.forward();
       curr = curComplex;
       // See if this is a strict equality / inequality comparator
-      if (complexOps.indexOf(curComplex + this.current()) !== -1) {
-        curr = curComplex + this.current();
+      if (complexOps.indexOf(curComplex + this.current) !== -1) {
+        curr = curComplex + this.current;
         this.forward();
       }
     }
@@ -259,9 +273,9 @@ export default class Lexer {
     const col = this.tcol;
     // We are not at whitespace or a delimiter, so extract the text and parse it
     if (tok.match(/^[-+]?[0-9]+$/)) {
-      if (this.current() === '.') {
+      if (this.current === '.') {
         this.forward();
-        if (this.current() === '.') {
+        if (this.current === '.') {
           this.back();
           return { type: Token.INT, value: tok, line, col };
         } else {
@@ -290,11 +304,11 @@ export default class Lexer {
   public parseString(delimiter: string): string {
     this.forward();
     let str = '';
-    while (!this.isFinished() && this.current() !== delimiter) {
-      const curr = this.current();
+    while (!this.isFinished() && this.current !== delimiter) {
+      const curr = this.current;
       if (curr === '\\') {
         this.forward();
-        switch (this.current()) {
+        switch (this.current) {
           case 'n':
             str = str + '\n';
             break;
@@ -305,7 +319,7 @@ export default class Lexer {
             str = str + '\r';
             break;
           default:
-            str = str + this.current();
+            str = str + this.current;
             break;
         }
         this.forward();
@@ -330,8 +344,9 @@ export default class Lexer {
     this.tline = line;
     this.tcol = col;
     let tok;
+
     if (this.inCode) {
-      let curr = this.current();
+      let curr = this.current;
       if (this.isFinished()) {
         return null;
       } else if (curr === '"' || curr === "'") {
@@ -349,12 +364,12 @@ export default class Lexer {
             this._extractString('-' + this.tags.BLOCK_END);
           this.inCode = false;
           if (this.trimBlocks) {
-            curr = this.current();
+            curr = this.current;
             if (curr === '\n') {
               this.forward();
             } else if (curr === '\r') {
               this.forward();
-              curr = this.current();
+              curr = this.current;
               if (curr === '\n') {
                 this.forward();
               } else {
@@ -379,7 +394,7 @@ export default class Lexer {
               return this.parseRegExp();
             }
           }
-          if (DELIM_CHARS.indexOf(curr) !== -1) {
+          if (DELIM_CHARS.includes(curr)) {
             return this.parseDelimeter();
           } else {
             tok = this._extractUntil(WHITESPACE_CHARS + DELIM_CHARS);
@@ -470,11 +485,12 @@ export default class Lexer {
           } else {
             // It does not match any tag, so add the character and
             // carry on
-            tok = tok + this.current();
+            tok = tok + this.current;
             this.forward();
           }
           data = this._extractUntil(startChars);
         }
+
         if (data === null && inComment) {
           throw new Error('expected end of comment, got end of file');
         }
@@ -495,21 +511,21 @@ export default class Lexer {
     if (this.isFinished()) {
       return null;
     }
-    const first = charString.indexOf(this.current());
+    const first = charString.indexOf(this.current);
     // Only proceed if the first character doesn't meet our condition
     if ((breakOnMatch && first === -1) || (!breakOnMatch && first !== -1)) {
-      let match = this.current();
+      let match = this.current;
       this.forward();
       // And pull out all the chars one at a time until we hit a breaking char
-      let idx = charString.indexOf(this.current());
+      let idx = charString.indexOf(this.current);
       while (
         ((breakOnMatch === true && idx === -1) ||
           (breakOnMatch === false && idx !== -1)) &&
         !this.isFinished()
       ) {
-        match = match + this.current();
+        match = match + this.current;
         this.forward();
-        idx = charString.indexOf(this.current());
+        idx = charString.indexOf(this.current);
       }
       return match;
     }

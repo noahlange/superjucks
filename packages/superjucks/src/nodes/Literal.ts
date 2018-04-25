@@ -14,6 +14,8 @@ export default class LiteralNode extends Node {
       compiler.emit(`'${val}'`, false);
     } else if (this.value === null) {
       compiler.emit('null', false);
+    } else if (this.value === undefined) {
+      compiler.emit('', false);
     } else {
       compiler.emit(this.value.toString(), false);
     }

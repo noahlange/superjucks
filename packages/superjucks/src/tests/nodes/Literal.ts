@@ -23,6 +23,11 @@ test('should compile a literal null', async t => {
   t.is(await compile(ast), 'null');
 });
 
+test('should compile an undefined value to an empty string', async t => {
+  const ast = new Nodes.Literal(0, 0, {});
+  t.is(await compile(ast), '');
+});
+
 test('should compile a literal', async t => {
   t.is(await run('{{ true }}'), 'true');
   t.is(await run('{{ "foobar" }}'), 'foobar');
