@@ -90,8 +90,8 @@ export default class Superjucks extends Config {
     If: Nodes.If,
     Import: Nodes.Import,
     Macro: Nodes.Macro,
+    Raw: Nodes.Raw,
     Set: Nodes.Set,
-    // Raw: Nodes.Raw,
     Switch: Nodes.Switch,
     Unless: Nodes.Unless
   };
