@@ -85,7 +85,7 @@ export default class Superjucks extends Config {
   public tags = {
     Block: Nodes.Block,
     Export: Nodes.Export,
-    Extends: Nodes.Filter,
+    Filter: Nodes.Filter,
     For: Nodes.For,
     If: Nodes.If,
     Import: Nodes.Import,

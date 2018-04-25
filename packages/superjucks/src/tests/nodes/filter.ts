@@ -54,7 +54,7 @@ test('should compile to a filter call', async t => {
     name: new Nodes.Literal(0, 0, { value: 'default' })
   });
   const source = await compile(ast);
-  t.is(source, 'lib.filter(\'default\', null, \'two\')');
+  t.is(source, 'await lib.filter(\'default\', null, \'two\')');
 });
 
 test('should evaluate a filter function', async t => {
@@ -62,4 +62,8 @@ test('should evaluate a filter function', async t => {
   const three = await run('{{ [ 1, 2, 3 ] | size }}');
   t.is(two, 'two');
   t.is(three, '3');
+});
+
+test('should parse and compile filter blocks', async t => {
+  t.is(await run('{% filter lower %}FOO{% endfilter %}'), 'foo');
 });

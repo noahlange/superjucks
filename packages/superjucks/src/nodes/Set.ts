@@ -55,7 +55,7 @@ export default class SetNode extends Node {
       compiler.emit(';', false);
       compiler.emitLine('');
       for (const sym of symbols) {
-        compiler.emitLine(`lib.frame.set('${ sym.value }', ${ sym.value });`);
+        compiler.emitLine(`lib.frame.set('${ sym.value }', await ${ sym.value });`);
       }
     });
     compiler.emitLine('}');

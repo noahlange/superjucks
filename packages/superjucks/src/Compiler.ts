@@ -5,9 +5,11 @@ import Frame from './Frame';
 import Node from './Node';
 import { parse } from './Parser';
 
+import Superjucks from './configs/Superjucks/Config';
+
 export default class Compiler {
 
-  public static async compile(src: string, config: Config) {
+  public static async compile(src: string, config: Config = new Superjucks()) {
     const c = new Compiler();
     const p = parse(src, config);
     await c.compile(p, new Frame());

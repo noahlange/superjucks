@@ -282,8 +282,12 @@ export default class Parser {
 
     const cased = tok.value[0].toUpperCase() + tok.value.slice(1);
     const node = nodes[cased];
-    if (node && node.parse) {
-      return node.parse(this);
+    if (node) {
+      if (node.parseBlock) {
+        return node.parseBlock(this);
+      } else if (node.parse) {
+        return node.parse(this);
+      }
     } else {
       throw new Error(
         `Unknown block tag ${tok.value} (${tok.line}, ${tok.col})`

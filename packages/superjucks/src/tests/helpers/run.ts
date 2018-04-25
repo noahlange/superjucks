@@ -1,12 +1,12 @@
 import runtime from 'superjucks-runtime';
 import Superjucks from '../../configs/Superjucks/Config';
+
+import Compiler from '../../Compiler';
 import Frame from '../../Frame';
-import compile from './compile';
 import { ast } from './parse';
 
 export default async function run(input: string, ctx?: any) {
-  const parsed = ast(input);
-  const str = await compile(parsed);
+  const str = await Compiler.compile(input);
   try {
     const fn = new Function(str)();
     const lib = runtime(ctx, new Superjucks(), new Frame());

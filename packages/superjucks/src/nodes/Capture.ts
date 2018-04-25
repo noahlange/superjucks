@@ -10,7 +10,7 @@ export default class CaptureNode extends Node {
    * Compiles a Capture node into an IIFE for assigning
    * to variables, &c.
    * ```javascript
-   * (() => {
+   * (async () => {
    *   const buffer = new lib.Buffer;
    *   // whatever was going to happen in a new buffer
    *   return buffer.out();
@@ -18,12 +18,12 @@ export default class CaptureNode extends Node {
    * ```
    */
   public compile(compiler: Compiler, frame: Frame) {
-    compiler.emit('(() => {\n', false);
+    compiler.emit('await (async () => {\n', false);
     compiler.indent(() => {
       compiler.emitLine('const buffer = new lib.Buffer;');
       compiler.compile(this.body, frame);
       compiler.emitLine('return buffer.out();');
     });
-    compiler.emitLine('})()');
+    compiler.emit('  '.repeat(compiler.currentIndent) + '})()');
   }
 }
